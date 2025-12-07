@@ -1,0 +1,415 @@
+openapi: 3.0.0
+info:
+  title: Physical AI Book Authentication API
+  description: API for user authentication and profile management in the Physical AI & Humanoid Robotics Book
+  version: 1.0.0
+  contact:
+    name: Physical AI Book Team
+    email: contact@physicalai-book.com
+
+servers:
+  - url: https://api.physicalai-book.com/v1
+    description: Production server
+  - url: https://staging-api.physicalai-book.com/v1
+    description: Staging server
+
+paths:
+  /auth/signup:
+    post:
+      summary: User registration with background information
+      description: Create a new user account with software and hardware background details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSignupRequest'
+      responses:
+        '201':
+          description: User successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Invalid input data
+        '409':
+          description: User with this email already exists
+
+  /auth/signin:
+    post:
+      summary: User login
+      description: Authenticate user and return session token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSigninRequest'
+      responses:
+        '200':
+          description: User successfully authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSigninResponse'
+        '401':
+          description: Invalid credentials
+
+  /auth/profile:
+    get:
+      summary: Get user profile
+      description: Retrieve the authenticated user's profile information
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: Unauthorized access
+
+    put:
+      summary: Update user profile
+      description: Update the authenticated user's profile information
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+      responses:
+        '200':
+          description: User profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: Unauthorized access
+        '400':
+          description: Invalid input data
+
+  /content/modules:
+    get:
+      summary: List all book modules
+      description: Retrieve the list of all book modules with their details
+      responses:
+        '200':
+          description: List of modules retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  modules:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Module'
+
+  /content/modules/{moduleId}:
+    get:
+      summary: Get module details
+      description: Retrieve details for a specific book module
+      parameters:
+        - name: moduleId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the module
+      responses:
+        '200':
+          description: Module details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Module'
+        '404':
+          description: Module not found
+
+  /progress/{moduleId}:
+    get:
+      summary: Get user progress for a module
+      description: Retrieve the authenticated user's progress for a specific module
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: moduleId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the module
+      responses:
+        '200':
+          description: User progress retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProgress'
+        '401':
+          description: Unauthorized access
+        '404':
+          description: Module not found
+
+    post:
+      summary: Update user progress for a module
+      description: Update the authenticated user's progress for a specific module
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: moduleId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the module
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProgressRequest'
+      responses:
+        '200':
+          description: User progress updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProgress'
+        '401':
+          description: Unauthorized access
+        '404':
+          description: Module not found
+
+components:
+  schemas:
+    UserSignupRequest:
+      type: object
+      required:
+        - email
+        - password
+        - name
+        - role
+        - background
+      properties:
+        email:
+          type: string
+          format: email
+          description: User's email address
+        password:
+          type: string
+          format: password
+          description: User's password (min 8 characters)
+        name:
+          type: string
+          description: User's full name
+        role:
+          type: string
+          enum: [student, educator, practitioner]
+          description: User's role classification
+        background:
+          type: object
+          required:
+            - software
+            - hardware
+          properties:
+            software:
+              type: string
+              description: User's software experience level and languages
+            hardware:
+              type: string
+              description: User's hardware experience level
+            domain:
+              type: string
+              description: User's domain of expertise or interest
+
+    UserSigninRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: User's email address
+        password:
+          type: string
+          format: password
+          description: User's password
+
+    UserSigninResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Authentication token
+        user:
+          $ref: '#/components/schemas/UserResponse'
+
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique user identifier
+        email:
+          type: string
+          format: email
+          description: User's email address
+        name:
+          type: string
+          description: User's full name
+        role:
+          type: string
+          enum: [student, educator, practitioner]
+          description: User's role classification
+        background:
+          $ref: '#/components/schemas/UserBackground'
+        createdAt:
+          type: string
+          format: date-time
+          description: Account creation timestamp
+        lastAccessed:
+          type: string
+          format: date-time
+          description: Last login timestamp
+
+    UserUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: User's updated name
+        role:
+          type: string
+          enum: [student, educator, practitioner]
+          description: User's updated role classification
+        background:
+          $ref: '#/components/schemas/UserBackground'
+
+    UserBackground:
+      type: object
+      properties:
+        software:
+          type: string
+          description: User's software experience level and languages
+        hardware:
+          type: string
+          description: User's hardware experience level
+        domain:
+          type: string
+          description: User's domain of expertise or interest
+
+    Module:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique module identifier
+        title:
+          type: string
+          description: Module title
+        description:
+          type: string
+          description: Brief module description
+        order:
+          type: integer
+          description: Sequence in book progression
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/Section'
+        learningOutcomes:
+          type: array
+          items:
+            type: string
+          description: What user should understand
+        prerequisites:
+          type: array
+          items:
+            type: string
+          description: Required knowledge areas
+        estimatedTime:
+          type: integer
+          description: Minutes to complete module
+
+    Section:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique section identifier
+        title:
+          type: string
+          description: Section title
+        content:
+          type: string
+          description: Main content in MDX format
+        order:
+          type: integer
+          description: Sequence within module
+        type:
+          type: string
+          enum: [text, example, diagram, exercise, reference]
+          description: Section type
+        relatedTopics:
+          type: array
+          items:
+            type: string
+          description: Linked concepts in other sections
+
+    UserProgress:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Reference to User Profile
+        moduleId:
+          type: string
+          description: Reference to Book Module
+        completedSections:
+          type: array
+          items:
+            type: string
+          description: IDs of completed sections
+        overallProgress:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100
+          description: Progress percentage
+        lastSection:
+          type: string
+          description: ID of last accessed section
+        timeSpent:
+          type: integer
+          description: Minutes spent on module
+        completedAt:
+          type: string
+          format: date-time
+          description: When module was completed, null if in progress
+
+    UpdateProgressRequest:
+      type: object
+      properties:
+        sectionId:
+          type: string
+          description: ID of section being completed
+        action:
+          type: string
+          enum: [complete, in-progress, bookmark]
+          description: Action to take on section
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
