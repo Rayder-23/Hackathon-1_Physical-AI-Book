@@ -1,14 +1,23 @@
 // @ts-check
 // `@type` JSDoc annotations allow IDEs and type checkers to type-check this file
 // even if they don't support TypeScript syntax.
+// There are various equivalent ways to declare your Docusaurus config.
+// See: https://docusaurus.io/docs/api/docusaurus-config
 
 import { themes as prismThemes } from 'prism-react-renderer';
+
+// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Physical AI & Humanoid Robotics',
   tagline: 'A comprehensive guide to embodied intelligence',
   favicon: 'img/favicon.ico',
+
+  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
+  future: {
+    v4: true, // Improve compatibility with the upcoming Docusaurus v4
+  },
 
   // Set the production url of your site here
   url: 'https://your-docusaurus-site.example.com',
@@ -18,8 +27,8 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'your-organization', // Usually your GitHub org/user name.
-  projectName: 'physical-ai-book', // Usually your repo name.
+  organizationName: 'Rayder-23', // Usually your GitHub org/user name.
+  projectName: 'Hackathon-1_Physical-AI-Book', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',

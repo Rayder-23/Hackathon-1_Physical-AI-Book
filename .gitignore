@@ -1,10 +1,12 @@
 # Dependencies
 node_modules/
+/node_modules
 jspm_packages/
 
 # Production
 dist/
 build/
+/build
 coverage/
 
 # Environment
@@ -18,6 +20,8 @@ coverage/
 # Docusaurus
 .docusaurus/
 .cache/
+.docusaurus
+.cache-loader
 
 # Logs
 *.log
@@ -64,3 +68,10 @@ pip-delete-this-directory.txt
 # System
 .DS_Store
 Thumbs.db
+
+# Misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
