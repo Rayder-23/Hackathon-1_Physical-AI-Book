@@ -6,25 +6,219 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-color-primary: #2563eb;
+  --ifm-color-primary-dark: #1d4ed8;
+  --ifm-color-primary-darker: #1e40af;
+  --ifm-color-primary-darkest: #1e3a8a;
+  --ifm-color-primary-light: #3b82f6;
+  --ifm-color-primary-lighter: #60a5fa;
+  --ifm-color-primary-lightest: #93c5fd;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  /* Additional custom variables for Physical AI Book */
+  --phai-color-accent: #7c3aed;
+  --phai-color-accent-dark: #6d28d9;
+  --phai-color-success: #10b981;
+  --phai-color-warning: #f59e0b;
+  --phai-color-danger: #ef4444;
+  --phai-bg-card: #ffffff;
+  --phai-bg-card-dark: #1f2937;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
+  --ifm-color-primary: #3b82f6;
+  --ifm-color-primary-dark: #2563eb;
+  --ifm-color-primary-darker: #1d4ed8;
+  --ifm-color-primary-darkest: #1e3a8a;
+  --ifm-color-primary-light: #60a5fa;
+  --ifm-color-primary-lighter: #93c5fd;
+  --ifm-color-primary-lightest: #bfdbfe;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  /* Dark mode custom variables */
+  --phai-bg-card: #1f2937;
+  --phai-bg-card-dark: #111827;
+}
+
+/* Custom styling for Physical AI Book */
+
+/* Personalization toggle styling */
+.personalization-toggle {
+  background: var(--phai-bg-card);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-global-radius);
+  padding: var(--ifm-global-spacing);
+  margin: var(--ifm-global-spacing) 0;
+}
+
+[data-theme='dark'] .personalization-toggle {
+  background: var(--phai-bg-card-dark);
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkbox-label {
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Translation toggle styling */
+.translation-toggle {
+  background: var(--phai-bg-card);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-global-radius);
+  padding: var(--ifm-global-spacing);
+  margin: var(--ifm-global-spacing) 0;
+}
+
+[data-theme='dark'] .translation-toggle {
+  background: var(--phai-bg-card-dark);
+}
+
+/* Protected content styling */
+.protected-content {
+  border-left: 4px solid var(--ifm-color-primary);
+  background-color: rgba(59, 130, 246, 0.05);
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0 var(--ifm-global-radius) var(--ifm-global-radius) 0;
+}
+
+.protected-content.unauthorized {
+  border-left-color: var(--phai-color-danger);
+  background-color: rgba(239, 68, 68, 0.05);
+}
+
+[data-theme='dark'] .protected-content {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+[data-theme='dark'] .protected-content.unauthorized {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* Authentication forms styling */
+.login-form, .register-form {
+  background: var(--phai-bg-card);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-global-radius);
+  padding: var(--ifm-global-spacing);
+  margin: var(--ifm-global-spacing) 0;
+}
+
+[data-theme='dark'] .login-form, [data-theme='dark'] .register-form {
+  background: var(--phai-bg-card-dark);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-global-radius);
+  background-color: var(--ifm-background-surface-color);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Enhanced alert styles for multilingual content */
+.alert--warning {
+  --ifm-alert-background-color: #fef3c7;
+  --ifm-alert-border-color: #fbbf24;
+  --ifm-alert-color: #92400e;
+}
+
+[data-theme='dark'] .alert--warning {
+  --ifm-alert-background-color: #451a03;
+  --ifm-alert-border-color: #78350f;
+  --ifm-alert-color: #fde68a;
+}
+
+/* Custom styling for accessibility and RTL support */
+[dir="rtl"] {
+  text-align: right;
+}
+
+/* Styling for custom MDX components */
+.translatable-content {
+  position: relative;
+  padding: 1rem;
+  border-radius: var(--ifm-global-radius);
+  margin: 1rem 0;
+}
+
+.translatable-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--ifm-color-primary);
+  border-radius: var(--ifm-global-radius) 0 0 var(--ifm-global-radius);
+}
+
+/* Responsive design improvements */
+@media (max-width: 768px) {
+  .personalization-toggle,
+  .translation-toggle,
+  .login-form,
+  .register-form {
+    padding: 0.75rem;
+  }
+
+  .checkbox-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}
+
+/* Animation for interactive elements */
+.button--primary {
+  transition: all 0.2s ease-in-out;
+}
+
+.button--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ifm-color-emphasis-100);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ifm-color-emphasis-300);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ifm-color-emphasis-400);
 }

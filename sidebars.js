@@ -89,6 +89,15 @@ const sidebars = {
         'conclusion/glossary'
       ],
     },
+    {
+      type: 'category',
+      label: 'Testing',
+      items: [
+        'personalization-test',
+        'translation-test',
+        'auth-test'
+      ],
+    },
   ],
 };
 

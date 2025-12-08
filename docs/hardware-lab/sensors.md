@@ -23,10 +23,10 @@ Sensors form the sensory system of humanoid robots, providing the data necessary
 - **IR Filtering**: Removable IR filter for night vision
 
 ##### Performance Metrics
-- **Dynamic Range**: >60dB for good low-light performance
-- **Signal-to-Noise Ratio**: >40dB for clean images
-- **Distortion**: <2% geometric distortion preferred
-- **Color Accuracy**: ΔE < 5 for accurate color reproduction
+- **Dynamic Range**: &gt;60dB for good low-light performance
+- **Signal-to-Noise Ratio**: &gt;40dB for clean images
+- **Distortion**: &lt;2% geometric distortion preferred
+- **Color Accuracy**: ΔE &lt; 5 for accurate color reproduction
 
 ##### Popular Models
 - **Intel RealSense D455**: RGB camera with depth sensing
@@ -118,14 +118,14 @@ Sensors form the sensory system of humanoid robots, providing the data necessary
 - **Gyroscope**: ±250, 500, 1000, 2000 °/s ranges
 - **Accelerometer**: ±2g, 4g, 8g, 16g ranges
 - **Resolution**: 16-bit ADC typically
-- **Noise Density**: <100 µg/√Hz for accelerometer
-- **Bias Stability**: <10 °/h for gyroscope
+- **Noise Density**: &lt;100 µg/√Hz for accelerometer
+- **Bias Stability**: &lt;10 °/h for gyroscope
 - **Bandwidth**: 100Hz to 1kHz output rates
 
 ##### 9-Axis IMU
 - **Magnetometer**: ±1300 µT to ±4800 µT ranges
 - **Resolution**: 13-16 bit for magnetometer
-- **Noise**: <0.8 µT RMS for magnetometer
+- **Noise**: &lt;0.8 µT RMS for magnetometer
 - **Applications**: Heading reference, magnetic field mapping
 
 ##### Performance Metrics
@@ -148,7 +148,7 @@ Sensors form the sensory system of humanoid robots, providing the data necessary
 - **Update Rate**: 1-10 Hz
 - **Channels**: 48-96 satellite tracking channels
 - **Sensitivity**: -165 dBm tracking sensitivity
-- **Cold Start**: <29s to first fix (typical)
+- **Cold Start**: &lt;29s to first fix (typical)
 
 ##### RTK GPS
 - **Accuracy**: 1-2cm positioning accuracy
@@ -166,8 +166,8 @@ Sensors form the sensory system of humanoid robots, providing the data necessary
 - **Resolution**: 0.01% to 0.1% of full scale
 - **Accuracy**: ±0.1% to ±1% of full scale
 - **Bandwidth**: DC to 1kHz bandwidth
-- **Non-linearity**: <0.05% of full scale
-- **Cross-talk**: <1% between channels
+- **Non-linearity**: &lt;0.05% of full scale
+- **Cross-talk**: &lt;1% between channels
 
 ##### Applications
 - **Grasping Control**: Force feedback during grasping

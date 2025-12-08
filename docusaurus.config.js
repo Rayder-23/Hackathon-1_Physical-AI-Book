@@ -29,6 +29,8 @@ const config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'Rayder-23', // Usually your GitHub org/user name.
   projectName: 'Hackathon-1_Physical-AI-Book', // Usually your repo name.
+  deploymentBranch: 'gh-pages', // Branch to deploy to GitHub Pages
+  trailingSlash: false, // Set to true or false to control trailing slashes in URLs
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -59,6 +61,11 @@ const config = {
         },
       }),
     ],
+  ],
+
+  // Add wrapper to provide personalization context
+  clientModules: [
+    require.resolve('./src/components/wrapper'),
   ],
 
   themeConfig:

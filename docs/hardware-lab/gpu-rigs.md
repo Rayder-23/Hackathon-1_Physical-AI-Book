@@ -33,10 +33,10 @@ GPU rigs form the computational backbone for Physical AI and humanoid robotics d
 - **Interaction**: Real-time natural language processing
 
 #### Latency Constraints
-- **Control Loop**: <10ms for control system updates
-- **Perception**: <50ms for visual perception
-- **Planning**: <100ms for path planning
-- **Interaction**: <200ms for natural language response
+- **Control Loop**: &lt;10ms for control system updates
+- **Perception**: &lt;50ms for visual perception
+- **Planning**: &lt;100ms for path planning
+- **Interaction**: &lt;200ms for natural language response
 
 ## GPU Platform Options
 
