@@ -182,7 +182,19 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    // In SSR or if not wrapped properly, return a default state
+    if (typeof window === 'undefined') {
+      return {
+        user: null,
+        isAuthenticated: false,
+        loading: false,
+        error: null,
+        login: () => Promise.resolve({ success: false }),
+        logout: () => Promise.resolve()
+      };
+    } else {
+      throw new Error('useAuth must be used within an AuthProvider');
+    }
   }
   return context;
 };

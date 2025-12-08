@@ -73,7 +73,17 @@ export const TranslationProvider = ({ children }) => {
 export const useTranslation = () => {
   const context = useContext(TranslationContext);
   if (!context) {
-    throw new Error('useTranslation must be used within a TranslationProvider');
+    // In SSR or if not wrapped properly, return a default state
+    if (typeof window === 'undefined') {
+      return {
+        currentLanguage: 'en',
+        isInitialized: true, // Default to initialized for SSR
+        switchLanguage: () => {},
+        toggleLanguage: () => {}
+      };
+    } else {
+      throw new Error('useTranslation must be used within a TranslationProvider');
+    }
   }
   return context;
 };

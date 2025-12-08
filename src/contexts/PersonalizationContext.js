@@ -134,7 +134,21 @@ export const PersonalizationProvider = ({ children }) => {
 export const usePersonalization = () => {
   const context = useContext(PersonalizationContext);
   if (!context) {
-    throw new Error('usePersonalization must be used within a PersonalizationProvider');
+    // In SSR or if not wrapped properly, return a default state
+    if (typeof window === 'undefined') {
+      return {
+        settings: { enabled: false, difficulty: 'intermediate', background: 'mixed' },
+        userBackground: { softwareBackground: '', hardwareBackground: '', experienceLevel: 'intermediate' },
+        isInitialized: true, // Default to initialized for SSR
+        updateSettings: () => {},
+        updateUserBackground: () => {},
+        togglePersonalization: () => {},
+        setDifficulty: () => {},
+        setBackgroundPreference: () => {}
+      };
+    } else {
+      throw new Error('usePersonalization must be used within a PersonalizationProvider');
+    }
   }
   return context;
 };
