@@ -3,15 +3,18 @@ import React from 'react';
 import { PersonalizationProvider } from '../contexts/PersonalizationContext';
 import { TranslationProvider } from '../contexts/TranslationContext';
 import { AuthProvider } from '../contexts/AuthContext';
+import { SecurityProvider } from '../contexts/SecurityContext';
 
 export const wrapRootElement = ({ element }) => {
   return (
-    <AuthProvider>
-      <TranslationProvider>
-        <PersonalizationProvider>
-          {element}
-        </PersonalizationProvider>
-      </TranslationProvider>
-    </AuthProvider>
+    <SecurityProvider>
+      <AuthProvider>
+        <TranslationProvider>
+          <PersonalizationProvider>
+            {element}
+          </PersonalizationProvider>
+        </TranslationProvider>
+      </AuthProvider>
+    </SecurityProvider>
   );
 };

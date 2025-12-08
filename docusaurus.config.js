@@ -68,6 +68,11 @@ const config = {
     require.resolve('./src/components/wrapper'),
   ],
 
+  // Performance optimization plugins
+  plugins: [
+    require.resolve('./src/plugins/docusaurus-plugin-performance-optimization'),
+  ],
+
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({

@@ -161,8 +161,8 @@ description: "Task list for Physical AI Book (Iteration 2) implementation"
 
 - [X] T049 [P] Update documentation files in docs/ with final content
 - [X] T050 [P] Add custom CSS styling in src/css/custom.css
-- [ ] T051 Performance optimization for page load times under 3 seconds
-- [ ] T052 Security hardening for authentication and content access
+- [X] T051 Performance optimization for page load times under 3 seconds
+- [X] T052 Security hardening for authentication and content access
 - [X] T053 Run build validation with `npm run build`
 - [X] T054 Test deployment to GitHub Pages
 - [X] T055 Run quickstart.md validation steps
