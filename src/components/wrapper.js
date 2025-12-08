@@ -1,14 +1,17 @@
-// Client module to wrap the app with both Personalization and Translation providers
+// Client module to wrap the app with all required providers
 import React from 'react';
 import { PersonalizationProvider } from '../contexts/PersonalizationContext';
 import { TranslationProvider } from '../contexts/TranslationContext';
+import { AuthProvider } from '../contexts/AuthContext';
 
 export const wrapRootElement = ({ element }) => {
   return (
-    <TranslationProvider>
-      <PersonalizationProvider>
-        {element}
-      </PersonalizationProvider>
-    </TranslationProvider>
+    <AuthProvider>
+      <TranslationProvider>
+        <PersonalizationProvider>
+          {element}
+        </PersonalizationProvider>
+      </TranslationProvider>
+    </AuthProvider>
   );
 };

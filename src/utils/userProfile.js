@@ -4,7 +4,12 @@
 // Get user profile from localStorage
 export const getUserProfile = () => {
   try {
-    const profile = localStorage.getItem('userProfile');
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return null;
+    }
+
+    const profile = window.localStorage.getItem('userProfile');
     return profile ? JSON.parse(profile) : null;
   } catch (error) {
     console.error("Error getting user profile:", error);
@@ -15,7 +20,12 @@ export const getUserProfile = () => {
 // Save user profile to localStorage
 export const saveUserProfile = (profileData) => {
   try {
-    localStorage.setItem('userProfile', JSON.stringify(profileData));
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return false;
+    }
+
+    window.localStorage.setItem('userProfile', JSON.stringify(profileData));
     return true;
   } catch (error) {
     console.error("Error saving user profile:", error);
@@ -118,7 +128,12 @@ export const setUserPreferences = (preferences) => {
 // Clear user profile (for logout or reset)
 export const clearUserProfile = () => {
   try {
-    localStorage.removeItem('userProfile');
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return true;
+    }
+
+    window.localStorage.removeItem('userProfile');
     return true;
   } catch (error) {
     console.error("Error clearing user profile:", error);

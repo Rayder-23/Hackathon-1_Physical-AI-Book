@@ -34,7 +34,12 @@ export const getUserProfile = async () => {
     }
 
     // Fallback to localStorage for static hosting
-    const storedUser = localStorage.getItem('currentUser');
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return null;
+    }
+
+    const storedUser = window.localStorage.getItem('currentUser');
     if (storedUser) {
       return JSON.parse(storedUser);
     }
@@ -44,7 +49,12 @@ export const getUserProfile = async () => {
     console.error("Error getting user profile:", error);
     // Fallback to localStorage in case of error
     try {
-      const storedUser = localStorage.getItem('currentUser');
+      // Check if we're in a browser environment
+      if (typeof window === 'undefined' || !window.localStorage) {
+        return null;
+      }
+
+      const storedUser = window.localStorage.getItem('currentUser');
       return storedUser ? JSON.parse(storedUser) : null;
     } catch {
       return null;
@@ -55,13 +65,18 @@ export const getUserProfile = async () => {
 export const updateUserProfile = async (profileData) => {
   // In static mode, we store user profile data in localStorage
   try {
-    const existingProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return null;
+    }
+
+    const existingProfile = JSON.parse(window.localStorage.getItem('userProfile') || '{}');
     const updatedProfile = {
       ...existingProfile,
       ...profileData,
       updatedAt: new Date().toISOString()
     };
-    localStorage.setItem('userProfile', JSON.stringify(updatedProfile));
+    window.localStorage.setItem('userProfile', JSON.stringify(updatedProfile));
     return updatedProfile;
   } catch (error) {
     console.error("Error updating user profile:", error);
@@ -72,7 +87,17 @@ export const updateUserProfile = async (profileData) => {
 export const getUserBackground = () => {
   // Retrieve user's software/hardware background from localStorage
   try {
-    const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return {
+        softwareBackground: '',
+        hardwareBackground: '',
+        experienceLevel: 'intermediate',
+        completedQuestionnaire: false
+      };
+    }
+
+    const profile = JSON.parse(window.localStorage.getItem('userProfile') || '{}');
     return {
       softwareBackground: profile.softwareBackground || '',
       hardwareBackground: profile.hardwareBackground || '',
@@ -103,7 +128,12 @@ export const isAuthenticated = async () => {
 
 export const getCurrentUser = () => {
   try {
-    const storedUser = localStorage.getItem('currentUser');
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return null;
+    }
+
+    const storedUser = window.localStorage.getItem('currentUser');
     return storedUser ? JSON.parse(storedUser) : null;
   } catch (error) {
     console.error("Error getting current user:", error);
@@ -113,11 +143,16 @@ export const getCurrentUser = () => {
 
 export const setCurrentUser = (userData) => {
   try {
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return false;
+    }
+
     const userWithTimestamp = {
       ...userData,
       lastLogin: new Date().toISOString()
     };
-    localStorage.setItem('currentUser', JSON.stringify(userWithTimestamp));
+    window.localStorage.setItem('currentUser', JSON.stringify(userWithTimestamp));
     return true;
   } catch (error) {
     console.error("Error setting current user:", error);
@@ -127,9 +162,14 @@ export const setCurrentUser = (userData) => {
 
 export const clearAuthData = () => {
   try {
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('userProfile');
-    localStorage.removeItem('authToken'); // if using tokens
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return true;
+    }
+
+    window.localStorage.removeItem('currentUser');
+    window.localStorage.removeItem('userProfile');
+    window.localStorage.removeItem('authToken'); // if using tokens
     return true;
   } catch (error) {
     console.error("Error clearing auth data:", error);

@@ -4,11 +4,21 @@
 // Get current personalization settings from localStorage
 export const getPersonalizationSettings = () => {
   try {
-    const settings = localStorage.getItem('personalizationSettings');
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return {
+        enabled: false,
+        difficulty: 'intermediate', // 'beginner', 'intermediate', 'advanced'
+        background: 'mixed', // 'software', 'hardware', 'mixed'
+        preferences: {}
+      };
+    }
+
+    const settings = window.localStorage.getItem('personalizationSettings');
     return settings ? JSON.parse(settings) : {
       enabled: false,
-      difficulty: 'intermediate', // 'beginner', 'intermediate', 'advanced'
-      background: 'mixed', // 'software', 'hardware', 'mixed'
+      difficulty: 'intermediate',
+      background: 'mixed',
       preferences: {}
     };
   } catch (error) {
@@ -25,7 +35,12 @@ export const getPersonalizationSettings = () => {
 // Save personalization settings to localStorage
 export const savePersonalizationSettings = (settings) => {
   try {
-    localStorage.setItem('personalizationSettings', JSON.stringify(settings));
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return false;
+    }
+
+    window.localStorage.setItem('personalizationSettings', JSON.stringify(settings));
     return true;
   } catch (error) {
     console.error("Error saving personalization settings:", error);

@@ -4,7 +4,12 @@
 // Get current language from localStorage or default to English
 export const getCurrentLanguage = () => {
   try {
-    const lang = localStorage.getItem('preferredLanguage');
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return 'en'; // Default to English
+    }
+
+    const lang = window.localStorage.getItem('preferredLanguage');
     return lang || 'en'; // Default to English
   } catch (error) {
     console.error("Error getting current language:", error);
@@ -15,9 +20,16 @@ export const getCurrentLanguage = () => {
 // Set current language and save to localStorage
 export const setCurrentLanguage = (languageCode) => {
   try {
-    localStorage.setItem('preferredLanguage', languageCode);
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return false;
+    }
+
+    window.localStorage.setItem('preferredLanguage', languageCode);
     // Update HTML lang attribute for accessibility
-    document.documentElement.lang = languageCode;
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = languageCode;
+    }
     return true;
   } catch (error) {
     console.error("Error setting current language:", error);
@@ -148,7 +160,12 @@ export const updateDocumentDirection = () => {
 // Get translation settings from localStorage
 export const getTranslationSettings = () => {
   try {
-    const settings = localStorage.getItem('translationSettings');
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return { language: 'en' };
+    }
+
+    const settings = window.localStorage.getItem('translationSettings');
     return settings ? JSON.parse(settings) : { language: 'en' };
   } catch (error) {
     console.error("Error getting translation settings:", error);
@@ -159,9 +176,16 @@ export const getTranslationSettings = () => {
 // Save translation settings to localStorage
 export const saveTranslationSettings = (settings) => {
   try {
-    localStorage.setItem('translationSettings', JSON.stringify(settings));
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return false;
+    }
+
+    window.localStorage.setItem('translationSettings', JSON.stringify(settings));
     // Update HTML lang attribute for accessibility
-    document.documentElement.lang = settings.language;
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = settings.language;
+    }
     // Update document direction
     updateDocumentDirection();
     return true;
