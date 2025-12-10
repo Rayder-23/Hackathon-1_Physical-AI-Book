@@ -8,6 +8,13 @@ const ProtectedContent = ({
   unauthorizedMessage = "You don't have permission to access this content.",
   showLoginLink = true
 }) => {
+  // Check if we're in browser environment before using context
+  if (typeof window === 'undefined') {
+    // In SSR, show content to avoid context errors
+    // Authentication will be handled on the client side
+    return <div className="protected-content">{children}</div>;
+  }
+
   const { isAuthenticated, user } = useAuth();
   const hasAccess = hasAccessToContent(requiredAccessLevel);
 

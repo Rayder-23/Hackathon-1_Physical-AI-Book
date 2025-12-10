@@ -9,6 +9,12 @@ const PersonalizedParagraph = ({
   className = '',
   ...props
 }) => {
+  // Check if we're in browser environment before using context
+  if (typeof window === 'undefined') {
+    // In SSR, show content normally to avoid context errors
+    return <p className={className} {...props}>{children}</p>;
+  }
+
   const { settings, isInitialized } = usePersonalization();
 
   // If context is not initialized, show content normally

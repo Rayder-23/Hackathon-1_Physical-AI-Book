@@ -11,6 +11,12 @@ const TranslatableContent = ({
   fallbackToEnglish = true,
   className = ''
 }) => {
+  // Check if we're in browser environment before using context
+  if (typeof window === 'undefined') {
+    // In SSR, show default content to avoid context errors
+    return <div className={className}>{children || englishContent}</div>;
+  }
+
   const { currentLanguage, isInitialized } = useTranslation();
 
   // If context is not initialized, show default content

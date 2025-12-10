@@ -10,6 +10,12 @@ const PersonalizedSection = ({
   style = {},
   ...props
 }) => {
+  // Check if we're in browser environment before using context
+  if (typeof window === 'undefined') {
+    // In SSR, show section normally to avoid context errors
+    return <div className={className} style={style} {...props}>{children}</div>;
+  }
+
   const { settings, isInitialized } = usePersonalization();
 
   // If context is not initialized, show section normally

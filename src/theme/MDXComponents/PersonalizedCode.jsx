@@ -9,6 +9,12 @@ const PersonalizedCode = ({
   className = '',
   ...props
 }) => {
+  // Check if we're in browser environment before using context
+  if (typeof window === 'undefined') {
+    // In SSR, show code normally to avoid context errors
+    return <code className={className} {...props}>{children}</code>;
+  }
+
   const { settings, isInitialized } = usePersonalization();
 
   // If context is not initialized, show code normally

@@ -3,6 +3,13 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Redirect } from '@docusaurus/router';
 
 const ProtectedRoute = ({ children, requiredRole = 'user', redirectTo = '/login' }) => {
+  // Check if we're in browser environment before using context
+  if (typeof window === 'undefined') {
+    // In SSR, render children without protection to avoid context errors
+    // Protection will be handled on the client side
+    return <>{children}</>;
+  }
+
   const { isAuthenticated, loading, user } = useAuth();
 
   // Show loading state while checking authentication

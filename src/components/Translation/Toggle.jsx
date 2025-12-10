@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from '../../contexts/TranslationContext';
 
 const TranslationToggle = () => {
+  // Check if we're in browser environment before using context
+  if (typeof window === 'undefined') {
+    // In SSR, return a placeholder to avoid context errors
+    // The actual component will be rendered on the client side
+    return <div>Loading translation settings...</div>;
+  }
+
   const { currentLanguage, switchLanguage, isInitialized } = useTranslation();
   const [localLanguage, setLocalLanguage] = useState(currentLanguage || 'en');
 

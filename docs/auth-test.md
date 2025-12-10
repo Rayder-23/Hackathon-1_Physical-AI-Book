@@ -8,22 +8,8 @@ This page demonstrates the authentication features of the Physical AI Book.
 
 ## Auth Status
 
-import { useAuth } from '@site/src/contexts/AuthContext';
-
 <div id="auth-status">
-  {typeof window !== 'undefined' && (
-    <script
-      dangerouslySetInnerHTML={{
-        __html: `
-          const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
-          const isAuthenticated = !!user;
-          document.getElementById('auth-status').innerHTML =
-            '<p><strong>Authenticated:</strong> ' + isAuthenticated + '</p>' +
-            (user ? '<p><strong>User:</strong> ' + user.email + ' (Role: ' + (user.role || 'user') + ')</p>' : '');
-        `
-      }}
-    />
-  )}
+  <p><strong>Authentication Status:</strong> Check console or login to see status</p>
 </div>
 
 ## Login

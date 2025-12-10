@@ -8,6 +8,12 @@ const PersonalizedContent = ({
   forDifficulty,  // 'beginner', 'intermediate', 'advanced'
   showIfEnabled = true // If true, show when personalization is enabled; if false, show when disabled
 }) => {
+  // Check if we're in browser environment before using context
+  if (typeof window === 'undefined') {
+    // In SSR, show all content to avoid context errors
+    return <>{children}</>;
+  }
+
   const { settings, isInitialized } = usePersonalization();
 
   // If context is not initialized, show all content
