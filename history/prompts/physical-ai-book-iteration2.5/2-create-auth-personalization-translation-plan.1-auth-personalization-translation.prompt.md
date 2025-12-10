@@ -5,8 +5,8 @@ stage: plan
 date: 2025-12-10
 surface: agent
 model: Claude Sonnet 4.5
-feature: auth-personalization-translation
-branch: 1-auth-personalization-translation
+feature: physical-ai-book-iteration2.5
+branch: "1-auth-personalization-translation"
 user: Claude
 command: /sp.plan
 labels:
@@ -17,16 +17,16 @@ labels:
   - static-hosting
   - better-auth
 links:
-  spec: ../1-auth-personalization-translation/spec.md
+  spec: ../physical-ai-book-iteration2.5/spec.md
   ticket: null
   adr: null
   pr: null
 files:
-  - specs/1-auth-personalization-translation/plan.md
-  - specs/1-auth-personalization-translation/research.md
-  - specs/1-auth-personalization-translation/data-model.md
-  - specs/1-auth-personalization-translation/quickstart.md
-  - specs/1-auth-personalization-translation/contracts/api-contracts.md
+  - specs/physical-ai-book-iteration2.5/plan.md
+  - specs/physical-ai-book-iteration2.5/research.md
+  - specs/physical-ai-book-iteration2.5/data-model.md
+  - specs/physical-ai-book-iteration2.5/quickstart.md
+  - specs/physical-ai-book-iteration2.5/contracts/api-contracts.md
 tests: []
 ---
 

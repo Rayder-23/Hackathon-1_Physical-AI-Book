@@ -39,7 +39,7 @@ const NavbarWrapper = (props) => {
 
   // Check if auth items already exist to avoid duplicates
   const hasAuthItems = originalItems.some(item =>
-    item.href === '/login' || item.href === '/register'
+    item.href === 'login' || item.href === 'register' || item.to === 'login' || item.to === 'register'
   );
 
   let newItems = [...originalItems];
@@ -50,12 +50,12 @@ const NavbarWrapper = (props) => {
       newItems = [
         ...originalItems,
         {
-          href: '/login',
+          to: 'login',
           label: 'Login',
           position: 'right',
         },
         {
-          href: '/register',
+          to: 'register',
           label: 'Register',
           position: 'right',
         }

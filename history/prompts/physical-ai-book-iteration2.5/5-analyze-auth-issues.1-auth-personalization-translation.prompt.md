@@ -5,8 +5,8 @@ stage: refactor
 date: 2025-12-10
 surface: agent
 model: Claude Sonnet 4.5
-feature: auth-personalization-translation
-branch: 1-auth-personalization-translation
+feature: physical-ai-book-iteration2.5
+branch: "1-auth-personalization-translation"
 user: Claude
 command: /sp.analyze
 labels:
@@ -17,9 +17,9 @@ labels:
   - static-hosting
   - debugging
 links:
-  spec: ../1-auth-personalization-translation/spec.md
-  plan: ../1-auth-personalization-translation/plan.md
-  tasks: ../1-auth-personalization-translation/tasks.md
+  spec: ../physical-ai-book-iteration2.5/spec.md
+  plan: ../physical-ai-book-iteration2.5/plan.md
+  tasks: ../physical-ai-book-iteration2.5/tasks.md
   ticket: null
   adr: null
   pr: null
