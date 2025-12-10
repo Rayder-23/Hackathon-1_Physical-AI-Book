@@ -16,8 +16,12 @@ const Login = ({ onLoginSuccess }) => {
 
     try {
       const result = await login(email, password);
-      if (result.success && onLoginSuccess) {
-        onLoginSuccess(result.user);
+      if (result.success) {
+        if (onLoginSuccess) {
+          onLoginSuccess(result.user);
+        }
+      } else {
+        setError(result.error || 'Login failed. Please try again.');
       }
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.');

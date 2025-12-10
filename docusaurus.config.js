@@ -63,10 +63,6 @@ const config = {
     ],
   ],
 
-  // Add wrapper to provide personalization context
-  clientModules: [
-    require.resolve('./src/components/wrapper'),
-  ],
 
   // Performance optimization plugins
   plugins: [
