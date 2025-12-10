@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
         const result = await authClient.signIn.email({
           email,
           password,
-          callbackURL: '/' // Redirect after login
+          callbackURL: window.location.origin + '/Hackathon-1_Physical-AI-Book/' // Redirect after login with base URL
         });
 
         if (result?.user) {
@@ -86,11 +86,13 @@ export const AuthProvider = ({ children }) => {
     if (typeof window !== 'undefined') {
       try {
         // Use Better-Auth client registration
+        // Make email optional by using a placeholder if not provided
+        const emailToUse = email || `user-${Date.now()}@example.com`;
         const result = await authClient.signUp.email({
-          email,
+          email: emailToUse,
           password,
           name,
-          callbackURL: '/' // Redirect after registration
+          callbackURL: window.location.origin + '/Hackathon-1_Physical-AI-Book/' // Redirect after registration with base URL
         });
 
         if (result?.user) {

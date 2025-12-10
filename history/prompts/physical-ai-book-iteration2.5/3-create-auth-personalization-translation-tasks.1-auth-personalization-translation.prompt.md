@@ -5,8 +5,8 @@ stage: tasks
 date: 2025-12-10
 surface: agent
 model: Claude Sonnet 4.5
-feature: auth-personalization-translation
-branch: 1-auth-personalization-translation
+feature: physical-ai-book-iteration2.5
+branch: "1-auth-personalization-translation"
 user: Claude
 command: /sp.tasks
 labels:
@@ -18,13 +18,13 @@ labels:
   - better-auth
   - tasks
 links:
-  spec: ../1-auth-personalization-translation/spec.md
-  plan: ../1-auth-personalization-translation/plan.md
+  spec: ../physical-ai-book-iteration2.5/spec.md
+  plan: ../physical-ai-book-iteration2.5/plan.md
   ticket: null
   adr: null
   pr: null
 files:
-  - specs/1-auth-personalization-translation/tasks.md
+  - specs/physical-ai-book-iteration2.5/tasks.md
 tests: []
 ---
 

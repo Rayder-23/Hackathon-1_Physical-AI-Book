@@ -50,13 +50,12 @@ const Register = ({ onRegisterSuccess }) => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">Email (optional):</label>
           <input
             type="email"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
             disabled={loading}
           />
         </div>

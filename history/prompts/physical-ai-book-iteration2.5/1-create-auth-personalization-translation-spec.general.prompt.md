@@ -5,8 +5,8 @@ stage: spec
 date: 2025-12-10
 surface: agent
 model: Claude Sonnet 4.5
-feature: auth-personalization-translation
-branch: 1-auth-personalization-translation
+feature: physical-ai-book-iteration2.5
+branch: "1-auth-personalization-translation"
 user: Claude
 command: /sp.specify
 labels:
@@ -21,8 +21,8 @@ links:
   adr: null
   pr: null
 files:
-  - specs/1-auth-personalization-translation/spec.md
-  - specs/1-auth-personalization-translation/checklists/requirements.md
+  - specs/physical-ai-book-iteration2.5/spec.md
+  - specs/physical-ai-book-iteration2.5/checklists/requirements.md
 tests: []
 ---
 
@@ -82,7 +82,7 @@ The specification addresses all user requirements including:
 - Dynamic header content based on authentication status
 - Full compatibility with GitHub Pages deployment
 
-A feature branch `1-auth-personalization-translation` was created and the specification was saved to `specs/1-auth-personalization-translation/spec.md` with a quality checklist at `specs/1-auth-personalization-translation/checklists/requirements.md`.
+A feature branch `physical-ai-book-iteration2.5` was created and the specification was saved to `specs/physical-ai-book-iteration2.5/spec.md` with a quality checklist at `specs/physical-ai-book-iteration2.5/checklists/requirements.md`.
 
 ## OUTCOME
 

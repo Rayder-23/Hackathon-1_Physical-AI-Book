@@ -9,7 +9,7 @@ function LoginPage() {
   // If already authenticated, redirect to home or dashboard
   if (isAuthenticated) {
     if (typeof window !== 'undefined') {
-      window.location.href = '/';
+      window.location.href = '/Hackathon-1_Physical-AI-Book/';
     }
     return null; // Prevent rendering during redirect
   }
@@ -26,12 +26,13 @@ function LoginPage() {
               console.log('Login successful, redirecting...', user);
               // In a real implementation, you'd redirect to the intended page
               if (typeof window !== 'undefined') {
-                window.location.href = '/';
+                // Redirect to homepage with proper base URL
+                window.location.href = window.location.origin + '/Hackathon-1_Physical-AI-Book/';
               }
             }} />
 
             <div className="margin-top--lg">
-              <p>Don't have an account? <a href="/register">Register here</a></p>
+              <p>Don't have an account? <a href="register">Register here</a></p>
             </div>
           </div>
         </div>
