@@ -6,7 +6,7 @@ date: 2025-12-10
 surface: agent
 model: Claude Sonnet 4.5
 feature: physical-ai-book-iteration2.5
-branch: "1-auth-personalization-translation"
+branch: "iteration-2.5"
 user: Claude
 command: /sp.specify
 labels:

@@ -6,7 +6,7 @@ date: 2025-12-11
 surface: agent
 model: Claude Sonnet 4.5
 feature: auth-personalization-translation
-branch: 1-auth-personalization-translation
+branch: "iteration-2.5"
 user: Claude
 command: /sp.analyze
 labels:

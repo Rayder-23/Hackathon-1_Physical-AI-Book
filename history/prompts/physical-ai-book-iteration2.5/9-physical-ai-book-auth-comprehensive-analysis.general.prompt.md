@@ -6,7 +6,7 @@ date: "2025-12-11"
 surface: "agent"
 model: "Claude Sonnet 4.5"
 feature: "none"
-branch: "1-auth-personalization-translation"
+branch: "iteration-2.5"
 user: "user"
 command: "comprehensive analysis"
 labels: ["authentication", "personalization", "translation", "docusaurus", "better-auth", "ssr", "base-url"]
