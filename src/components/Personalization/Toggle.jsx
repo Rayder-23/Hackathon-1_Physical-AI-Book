@@ -2,13 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { usePersonalization } from '../../contexts/PersonalizationContext';
 
 const PersonalizationToggle = () => {
-  // Check if we're in browser environment before using context
-  if (typeof window === 'undefined') {
-    // In SSR, return a placeholder to avoid context errors
-    // The actual component will be rendered on the client side
-    return <div>Loading personalization settings...</div>;
-  }
-
   const {
     settings,
     togglePersonalization,
@@ -16,6 +9,11 @@ const PersonalizationToggle = () => {
     setBackgroundPreference,
     isInitialized
   } = usePersonalization();
+
+  // Don't render if context is not initialized yet
+  if (!isInitialized) {
+    return <div>Loading personalization settings...</div>;
+  }
 
   const [localEnabled, setLocalEnabled] = useState(settings?.enabled || false);
   const [localDifficulty, setLocalDifficulty] = useState(settings?.difficulty || 'intermediate');

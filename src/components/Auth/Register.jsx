@@ -8,7 +8,7 @@ const Register = ({ onRegisterSuccess }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { login } = useAuth(); // Using login function for registration in static mode
+  const { register } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,17 +16,13 @@ const Register = ({ onRegisterSuccess }) => {
     setError('');
 
     try {
-      // For static hosting, registration is similar to login
-      // In a real implementation, this would call a register API
-      const result = await login(email, password);
-      if (result.success && onRegisterSuccess) {
-        // Update user profile with name
-        localStorage.setItem('currentUser', JSON.stringify({
-          ...result.user,
-          name: name || result.user.name
-        }));
-
-        onRegisterSuccess(result.user);
+      const result = await register(email, password, name);
+      if (result.success) {
+        if (onRegisterSuccess) {
+          onRegisterSuccess(result.user);
+        }
+      } else {
+        setError(result.error || 'Registration failed. Please try again.');
       }
     } catch (err) {
       setError(err.message || 'Registration failed. Please try again.');

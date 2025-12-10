@@ -1,28 +1,19 @@
-// File: src/theme/Root.js
 import React from 'react';
+import { AuthProvider } from '../contexts/AuthContext';
 import { PersonalizationProvider } from '../contexts/PersonalizationContext';
 import { TranslationProvider } from '../contexts/TranslationContext';
-import { AuthProvider } from '../contexts/AuthContext';
-import { SecurityProvider } from '../contexts/SecurityContext';
 
+// Root component that wraps the entire app with context providers
+// All providers are rendered on both server and client to maintain consistent DOM structure
+// The providers themselves handle SSR internally by checking for window availability
 export default function Root({ children }) {
-  // During SSR, do not rely on browser APIs
-  const isBrowser = typeof window !== 'undefined';
-
-  if (!isBrowser) {
-    // Return children unwrapped during SSR
-    return <>{children}</>;
-  }
-
   return (
-    <SecurityProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <PersonalizationProvider>
         <TranslationProvider>
-          <PersonalizationProvider>
-            {children}
-          </PersonalizationProvider>
+          {children}
         </TranslationProvider>
-      </AuthProvider>
-    </SecurityProvider>
+      </PersonalizationProvider>
+    </AuthProvider>
   );
 }
