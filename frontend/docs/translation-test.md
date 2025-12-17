@@ -8,13 +8,13 @@ This page demonstrates the Urdu translation features of the Physical AI Book.
 
 ## Translation Toggle
 
-import { TranslationToggle } from '@site/src/components/Translation/Toggle';
+import { TranslationToggle } from '../src/components/Translation/Toggle';
 
 <TranslationToggle />
 
 ## Translatable Content Examples
 
-import { TranslatableContent } from '@site/src/theme/MDXComponents';
+import { TranslatableContent } from '../src/theme/MDXComponents';
 
 ### Example with Content ID
 

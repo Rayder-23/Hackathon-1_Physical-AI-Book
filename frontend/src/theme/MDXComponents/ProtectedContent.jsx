@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAuth } from '@site/src/contexts/AuthContext';
-import { ACCESS_LEVELS, hasAccessToContent } from '@site/src/utils/accessControl';
+import { useAuth } from '../../contexts/AuthContext';
+import { ACCESS_LEVELS, hasAccessToContent } from '../../utils/accessControl';
 
 const ProtectedContent = ({
   children,

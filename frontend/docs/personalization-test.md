@@ -8,19 +8,19 @@ This page demonstrates the personalization features of the Physical AI Book.
 
 ## Questionnaire
 
-import { SignupQuestionnaire } from '@site/src/components/Auth/SignupQuestionnaire';
+import { SignupQuestionnaire } from '../src/components/Auth/SignupQuestionnaire';
 
 <SignupQuestionnaire onComplete={(data) => console.log('Questionnaire completed:', data)} />
 
 ## Personalization Toggle
 
-import { PersonalizationToggle } from '@site/src/components/Personalization/Toggle';
+import { PersonalizationToggle } from '../src/components/Personalization/Toggle';
 
 <PersonalizationToggle />
 
 ## Personalized Content Examples
 
-import { PersonalizedContent, PersonalizedParagraph, PersonalizedSection } from '@site/src/theme/MDXComponents';
+import { PersonalizedContent, PersonalizedParagraph, PersonalizedSection } from '../src/theme/MDXComponents';
 
 ### Content for Software Background
 

@@ -5,9 +5,9 @@ stage: green
 date: 2025-12-17
 surface: agent
 model: claude-sonnet-4-5-20250929
-feature: 1-book-rag-chatbot
+feature: rag-chatbot-iter3
 branch: iteration-3
-user: unknown
+user: Rayder
 command: /sp.phr
 labels: ["docusaurus", "rag", "chatbot", "integration", "frontend", "backend", "book-content", "qdrant"]
 links:

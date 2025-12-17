@@ -1,6 +1,6 @@
 # Feature Specification: Authentication, Personalization, and Translation Features
 
-**Feature Branch**: `1-auth-personalization-translation`
+**Feature Branch**: `iteration-2.5`
 **Created**: 2025-12-10
 **Status**: Draft
 **Input**: User description: "Implementation of Authentication, Personalization, and Translation features in a static Docusaurus website

@@ -1,6 +1,6 @@
 # Feature Specification: Integrated RAG Chatbot for Physical AI Book Platform (SDK Alignment Update)
 
-**Feature Branch**: `2-sdk-alignment`
+**Feature Branch**: `rag-chatbot-iter3`
 **Created**: 2025-12-17
 **Status**: Draft
 **Input**: User description: "Integrated RAG Chatbot for Physical AI Book Platform (Iteration 3.0)

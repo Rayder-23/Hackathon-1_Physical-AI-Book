@@ -2,7 +2,7 @@
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2025-12-10
-**Feature**: [Link to spec.md](../1-auth-personalization-translation/spec.md)
+**Feature**: [Link to spec.md](../2.5-physical-ai-book-iteration2.5/spec.md)
 
 ## Content Quality
 

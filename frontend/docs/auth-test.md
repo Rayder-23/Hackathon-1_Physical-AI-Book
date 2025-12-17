@@ -14,19 +14,19 @@ This page demonstrates the authentication features of the Physical AI Book.
 
 ## Login
 
-import { Login } from '@site/src/components/Auth/Login';
+import { Login } from '../src/components/Auth/Login';
 
 <Login onLoginSuccess={(user) => console.log('Login successful:', user)} />
 
 ## Register
 
-import { Register } from '@site/src/components/Auth/Register';
+import { Register } from '../src/components/Auth/Register';
 
 <Register onRegisterSuccess={(user) => console.log('Registration successful:', user)} />
 
 ## Protected Content Example
 
-import { ProtectedRoute } from '@site/src/components/Auth/ProtectedRoute';
+import { ProtectedRoute } from '../src/components/Auth/ProtectedRoute';
 
 <ProtectedRoute>
   <div className="protected-content">

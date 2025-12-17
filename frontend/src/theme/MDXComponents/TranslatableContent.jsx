@@ -1,6 +1,6 @@
 import React from 'react';
-import { useTranslation } from '@site/src/contexts/TranslationContext';
-import { hasTranslation, createFallbackContent } from '@site/src/utils/translation';
+import { useTranslation } from '../../contexts/TranslationContext';
+import { hasTranslation, createFallbackContent } from '../../utils/translation';
 
 // Component to handle content that can be translated
 const TranslatableContent = ({

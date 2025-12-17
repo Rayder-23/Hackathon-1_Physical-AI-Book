@@ -17,7 +17,7 @@ Create a `.env` file with the following variables:
 ```bash
 # OpenRouter API Configuration
 OPENROUTER_API_KEY=your_openrouter_api_key_here
-OPENROUTER_MODEL_NAME=openai/gpt-4-turbo
+OPENROUTER_MODEL_NAME=openai/gpt-4-mini
 
 # Qdrant Vector Database Configuration
 QDRANT_URL=your_qdrant_url_here

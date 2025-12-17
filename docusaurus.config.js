@@ -49,6 +49,7 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          path: 'frontend/docs',
           sidebarPath: './sidebars.js',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
@@ -62,17 +63,20 @@ const config = {
         },
         blog: false,
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: require.resolve('./frontend/src/css/custom.css'),
         },
       }),
     ],
   ],
 
+  staticDirectories: ['frontend/static'],
+
 
   // Performance optimization plugins
   plugins: [
-    require.resolve('./src/plugins/docusaurus-plugin-performance-optimization'),
+    require.resolve('./frontend/src/plugins/docusaurus-plugin-performance-optimization'),
   ],
+
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */

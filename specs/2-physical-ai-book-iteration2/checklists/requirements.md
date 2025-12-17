@@ -2,7 +2,7 @@
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2025-12-08
-**Feature**: [Link to spec.md](spec.md)
+**Feature**: [Link to spec.md](specs/2-physical-ai-book-iteration2/spec.md)
 
 ## Content Quality
 

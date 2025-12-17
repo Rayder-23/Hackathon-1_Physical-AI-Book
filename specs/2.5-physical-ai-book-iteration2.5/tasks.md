@@ -1,10 +1,10 @@
 # Implementation Tasks: Authentication, Personalization, and Translation Features
 
 **Feature**: Authentication, Personalization, and Translation Features
-**Branch**: `1-auth-personalization-translation`
+**Branch**: `iteration-2.5`
 **Created**: 2025-12-10
 **Status**: Draft
-**Input**: Feature specification from `/specs/1-auth-personalization-translation/spec.md`
+**Input**: Feature specification from `/specs/2.5-physical-ai-book-iteration2.5/spec.md`
 
 ## Implementation Strategy
 

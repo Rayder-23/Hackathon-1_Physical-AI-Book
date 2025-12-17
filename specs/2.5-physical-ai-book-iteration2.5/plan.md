@@ -1,7 +1,7 @@
 # Implementation Plan: Authentication, Personalization, and Translation Features
 
-**Branch**: `1-auth-personalization-translation` | **Date**: 2025-12-10 | **Spec**: [link to spec.md](../1-auth-personalization-translation/spec.md)
-**Input**: Feature specification from `/specs/1-auth-personalization-translation/spec.md`
+**Branch**: `iteration-2.5` | **Date**: 2025-12-10 | **Spec**: [link to spec.md](../2.5-physical-ai-book-iteration2.5/spec.md)
+**Input**: Feature specification from `/specs/2.5-physical-ai-book-iteration2.5/spec.md`
 
 **Note**: This template is filled in by the `/sp.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
 

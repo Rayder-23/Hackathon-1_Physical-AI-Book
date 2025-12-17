@@ -1,5 +1,5 @@
 import React from 'react';
-import { usePersonalization } from '@site/src/contexts/PersonalizationContext';
+import { usePersonalization } from '../../contexts/PersonalizationContext';
 
 // Component to show/hide content based on personalization settings
 const PersonalizedContent = ({

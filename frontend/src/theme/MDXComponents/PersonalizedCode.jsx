@@ -1,5 +1,5 @@
 import React from 'react';
-import { usePersonalization } from '@site/src/contexts/PersonalizationContext';
+import { usePersonalization } from '../../contexts/PersonalizationContext';
 
 // Personalized code block that can be filtered by background or difficulty
 const PersonalizedCode = ({
