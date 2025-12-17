@@ -7,7 +7,7 @@ surface: agent
 model: Claude Sonnet 4.5
 feature: none
 branch: main
-user: Claude Code User
+user: Rayder
 command: general development
 labels: ["physical-ai", "docusaurus", "robotics", "book", "documentation"]
 links:
