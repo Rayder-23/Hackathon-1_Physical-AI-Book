@@ -7,7 +7,7 @@ surface: agent
 model: Claude Sonnet 4.5
 feature: auth-personalization-translation
 branch: "iteration-2.5"
-user: Claude
+user: Rayder
 command: /sp.analyze
 labels:
   - authentication

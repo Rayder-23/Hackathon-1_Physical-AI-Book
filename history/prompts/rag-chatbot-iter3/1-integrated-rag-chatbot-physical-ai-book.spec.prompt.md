@@ -5,9 +5,9 @@ stage: spec
 date_iso: 2025-12-17
 surface: agent
 model: Claude Sonnet 4.5
-feature: book-rag-chatbot
+feature: rag-chatbot-iter3
 branch: iteration-3
-user: Ryyan
+user: Rayder
 command: /sp.specify "Integrated RAG Chatbot for Physical AI Book Platform (Iteration 3.0)"
 labels:
   - rag

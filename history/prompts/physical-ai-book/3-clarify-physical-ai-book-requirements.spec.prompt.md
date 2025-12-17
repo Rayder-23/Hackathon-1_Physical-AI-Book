@@ -7,7 +7,7 @@ surface: "agent"
 model: "Claude Sonnet 4.5"
 feature: "physical-ai-book"
 branch: "1-physical-ai-book"
-user: "user"
+user: "Rayder"
 command: "/sp.clarify"
 labels: ["spec", "clarification", "book", "ai", "robotics"]
 links:

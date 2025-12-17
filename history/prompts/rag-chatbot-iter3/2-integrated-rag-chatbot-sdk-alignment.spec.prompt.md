@@ -5,9 +5,9 @@ stage: spec
 date_iso: 2025-12-17
 surface: agent
 model: Claude Sonnet 4.5
-feature: sdk-alignment
-branch: 2-sdk-alignment
-user: Ryyan
+feature: rag-chatbot-iter3
+branch: iteration-3
+user: Rayder
 command: /sp.specify "Update spec.md: Integrated RAG Chatbot SDK Alignment"
 labels:
   - rag

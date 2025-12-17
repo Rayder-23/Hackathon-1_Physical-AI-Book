@@ -7,7 +7,7 @@ surface: "agent"
 model: "Claude Sonnet 4.5"
 feature: "none"
 branch: "iteration-2.5"
-user: "user"
+user: "Rayder"
 command: "comprehensive analysis"
 labels: ["authentication", "personalization", "translation", "docusaurus", "better-auth", "ssr", "base-url"]
 links:

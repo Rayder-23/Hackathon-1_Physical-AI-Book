@@ -5,9 +5,9 @@ stage: plan
 date_iso: 2025-12-17
 surface: agent
 model: Claude Sonnet 4.5
-feature: book-rag-chatbot
-branch: 2-sdk-alignment
-user: Ryyan
+feature: rag-chatbot-iter3
+branch: iteration-3
+user: Rayder
 command: /sp.plan "Create: High-level system architecture for an Integrated RAG Chatbot embedded in a published book"
 labels:
   - rag

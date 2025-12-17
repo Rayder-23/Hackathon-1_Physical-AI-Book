@@ -7,7 +7,7 @@ surface: agent
 model: Claude Sonnet 4.5
 feature: physical-ai-book-iteration2
 branch: 2-physical-ai-book-iteration2
-user: Claude Code User
+user: Rayder
 command: /sp.tasks
 labels: ["physical-ai", "docusaurus", "tasks", "planning", "implementation"]
 links:
