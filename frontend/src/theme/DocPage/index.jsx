@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import OriginalDocPage from '@theme-original/DocPage';
-import ChatInterface from '../src/components/ChatInterface/ChatInterface';
+import ChatInterface from '@site/src/components/ChatInterface/ChatInterface';
 import useDoc from '@docusaurus/useDoc';
 
 // Custom DocPage wrapper that adds the chat interface to documentation pages

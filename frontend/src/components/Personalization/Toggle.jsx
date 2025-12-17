@@ -2,13 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { usePersonalization } from '../../contexts/PersonalizationContext';
 
 const PersonalizationToggle = () => {
+  const personalizationContext = usePersonalization();
+
+  // Check if context is available (for SSR)
+  if (!personalizationContext) {
+    return <div>Personalization not available</div>;
+  }
+
   const {
     settings,
     togglePersonalization,
     setDifficulty,
     setBackgroundPreference,
     isInitialized
-  } = usePersonalization();
+  } = personalizationContext;
 
   // Don't render if context is not initialized yet
   if (!isInitialized) {

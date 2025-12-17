@@ -2,12 +2,19 @@ import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const Login = ({ onLoginSuccess }) => {
+  const authContext = useAuth();
+
+  // Check if context is available (for SSR)
+  if (!authContext) {
+    return <div>Authentication not available</div>;
+  }
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { login } = useAuth();
+  const { login } = authContext;
 
   const handleSubmit = async (e) => {
     e.preventDefault();

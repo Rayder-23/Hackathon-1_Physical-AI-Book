@@ -5,7 +5,21 @@ const TranslationContext = createContext();
 export const useTranslation = () => {
   const context = useContext(TranslationContext);
   if (!context) {
-    throw new Error('useTranslation must be used within a TranslationProvider');
+    // During SSR or if not wrapped in provider, return a default context
+    if (typeof window === 'undefined') {
+      // Server-side rendering - return default values
+      return {
+        currentLanguage: 'en',
+        switchLanguage: () => {},
+        isInitialized: true,
+        translations: {},
+        getTranslation: (key, defaultText) => defaultText,
+        loading: false
+      };
+    } else {
+      // Client-side without provider - throw error as before
+      throw new Error('useTranslation must be used within a TranslationProvider');
+    }
   }
   return context;
 };

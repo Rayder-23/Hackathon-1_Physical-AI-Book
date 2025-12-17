@@ -2,7 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from '../../contexts/TranslationContext';
 
 const TranslationToggle = () => {
-  const { currentLanguage, switchLanguage, isInitialized } = useTranslation();
+  const translationContext = useTranslation();
+
+  // Check if context is available (for SSR)
+  if (!translationContext) {
+    return <div>Translation not available</div>;
+  }
+
+  const { currentLanguage, switchLanguage, isInitialized } = translationContext;
   const [localLanguage, setLocalLanguage] = useState(currentLanguage || 'en');
 
   // Update local state when context language changes

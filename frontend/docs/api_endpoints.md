@@ -1,3 +1,7 @@
+---
+title: API Endpoints Documentation
+---
+
 # API Endpoints Documentation
 
 ## Overview
@@ -89,7 +93,7 @@ Perform content retrieval from the book without generating a response.
 }
 ```
 
-### GET /api/sessions/{session_id}
+### GET /api/sessions/:session_id
 Get details about a specific chat session.
 
 #### Path Parameters
