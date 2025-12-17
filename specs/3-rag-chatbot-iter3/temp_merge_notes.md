@@ -11,13 +11,12 @@
 - /frontend (standalone HTML chat interface - CONFLICT!)
 
 ## Desired Structure:
-- /frontend (Docusaurus project with embedded chat UI)
-  - /docs
-  - /src
-  - /static
-  - docusaurus.config.js
-  - sidebars.js
-  - etc.
+- /docs
+- /src
+- /static
+- docusaurus.config.js
+- sidebars.js
+- etc.
 - /backend (RAG backend)
   - Current backend content
 

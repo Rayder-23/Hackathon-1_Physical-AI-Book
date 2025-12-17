@@ -32,7 +32,7 @@ const config = {
   deploymentBranch: 'gh-pages', // Branch to deploy to GitHub Pages
   trailingSlash: false, // Set to true or false to control trailing slashes in URLs
 
-  onBrokenLinks: 'warn', // Changed from 'throw' to 'warn' to allow build to continue
+  onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
   // Even if you don't use internationalization, you can use this field to set
@@ -49,34 +49,25 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          path: 'frontend/docs',
           sidebarPath: './sidebars.js',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-          // Use the BookLayout for all docs pages
-          routeBasePath: '/docs',
-          // Set the layout component for docs
-          showLastUpdateTime: true,
-          showLastUpdateAuthor: true,
         },
         blog: false,
         theme: {
-          customCss: require.resolve('./frontend/src/css/custom.css'),
+          customCss: './src/css/custom.css',
         },
       }),
     ],
   ],
 
-  staticDirectories: ['frontend/static'],
-
 
   // Performance optimization plugins
   plugins: [
-    require.resolve('./frontend/src/plugins/docusaurus-plugin-performance-optimization'),
+    require.resolve('./src/plugins/docusaurus-plugin-performance-optimization'),
   ],
-
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
