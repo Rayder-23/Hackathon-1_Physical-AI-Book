@@ -149,6 +149,9 @@ Successfully merged the Docusaurus-based book project with the RAG chatbot imple
 ## Outcome & Impact
 The repository now has a clean, unified structure with Docusaurus as the main frontend and the RAG chatbot seamlessly integrated. The backend ingestion pipeline now reads from the Docusaurus /docs directory, making the knowledge base current with the published content. The chat interface appears as a sidebar on all documentation pages via a custom DocPage wrapper.
 
+## Subsequent Changes
+NOTE: The original merge described above was later undone. The frontend components were moved back from the /frontend directory to the project root, reverting to a structure where docs, src, and static directories are at the root level. This change was made to simplify the project structure.
+
 ## Tests Summary
 - Backend functionality validated with test_basic_functionality.py
 - API endpoints confirmed working

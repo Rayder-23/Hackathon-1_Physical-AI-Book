@@ -232,7 +232,7 @@ class DocumentIngestionService:
         logger.info(f"Content validation complete: {results['valid_chunks']} valid, {results['invalid_chunks']} invalid")
         return results
 
-    def load_markdown_files(self, docs_path: str = "../frontend/docs") -> List[Dict]:
+    def load_markdown_files(self, docs_path: str = "../docs") -> List[Dict]:
         """
         Load all markdown files from the docs directory
 
@@ -344,7 +344,7 @@ class DocumentIngestionService:
         """
         return sample_content
 
-    def ingest_docs_content(self, docs_path: str = "../frontend/docs") -> bool:
+    def ingest_docs_content(self, docs_path: str = "../docs") -> bool:
         """
         Ingest content from markdown files in the docs directory
 
