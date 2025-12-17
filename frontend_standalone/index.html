@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physical AI Book - RAG Chatbot</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="book-container">
+        <header>
+            <h1>Physical AI Book</h1>
+            <nav>
+                <a href="#chapter1">Chapter 1</a>
+                <a href="#chapter2">Chapter 2</a>
+                <a href="#chapter3">Chapter 3</a>
+            </nav>
+        </header>
+
+        <main>
+            <section id="chapter1">
+                <h2>Chapter 1: Introduction to Physical AI</h2>
+                <p>Physical AI represents a revolutionary approach to artificial intelligence that focuses on the interaction between AI systems and the physical world. This field combines traditional AI techniques with robotics, computer vision, and sensor technologies to create systems that can perceive, reason about, and act in physical environments.</p>
+
+                <p>The fundamental principles of Physical AI include perception, reasoning, and action. Perception involves sensing the environment through various modalities such as vision, touch, and sound. Reasoning encompasses the cognitive processes that interpret sensory data and make decisions. Action refers to the physical manifestation of AI decisions through robotic systems or other physical interfaces.</p>
+
+                <p>One of the key challenges in Physical AI is the integration of multiple sensory inputs to form a coherent understanding of the environment. This requires sophisticated sensor fusion techniques and robust algorithms that can handle uncertainty and noise in sensor data.</p>
+            </section>
+
+            <section id="chapter2">
+                <h2>Chapter 2: Perception in Physical AI</h2>
+                <p>Perception is the foundation of Physical AI systems. It involves the ability to sense and interpret the physical world through various modalities. Computer vision, tactile sensing, and auditory processing are all critical components of perception in Physical AI.</p>
+
+                <p>Modern perception systems leverage deep learning techniques to extract meaningful information from raw sensor data. These systems must be robust to variations in lighting, occlusions, and other environmental factors.</p>
+            </section>
+
+            <section id="chapter3">
+                <h2>Chapter 3: Reasoning and Decision Making</h2>
+                <p>Reasoning in Physical AI involves the cognitive processes that interpret sensory data and make decisions. This includes planning, prediction, and inference about the physical world.</p>
+
+                <p>Effective reasoning systems must handle uncertainty and incomplete information, which are common in real-world physical environments. Probabilistic models and Bayesian inference are often used to handle this uncertainty.</p>
+            </section>
+        </main>
+
+        <!-- Chat Interface -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <h3>Physical AI Book Assistant</h3>
+                <div class="mode-selector">
+                    <button id="full-book-mode" class="mode-btn active">Full Book Context</button>
+                    <button id="selected-text-mode" class="mode-btn">Selected Text Only</button>
+                </div>
+            </div>
+
+            <div id="chat-messages" class="chat-messages">
+                <div class="message bot-message">
+                    <div class="message-content">
+                        Hello! I'm your Physical AI book assistant. Ask me anything about the content in this book, and I'll provide answers based on the book's content.
+                    </div>
+                    <div class="message-meta">Book Assistant • Just now</div>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <div id="selected-text-preview" class="selected-text-preview" style="display: none;">
+                    <span class="preview-label">Selected text:</span>
+                    <span id="selected-text-content"></span>
+                    <button id="clear-selection" class="clear-btn">×</button>
+                </div>
+                <div class="input-container">
+                    <textarea
+                        id="user-input"
+                        placeholder="Ask a question about the Physical AI book..."
+                        rows="1"
+                    ></textarea>
+                    <button id="send-btn" class="send-btn">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include ChatKit SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@openai/chatkit-client@1.0.0/dist/chatkit.min.js"></script>
+    <script src="chat-interface.js"></script>
+</body>
+</html>
