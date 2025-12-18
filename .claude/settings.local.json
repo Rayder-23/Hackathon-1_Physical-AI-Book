@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(.specify/scripts/bash/create-new-feature.sh:*)",
+      "Bash(cat:*)",
+      "Bash(.specify/scripts/bash/setup-plan.sh:*)"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "disabledMcpjsonServers": [
+  ],
+  "enableAllProjectMcpServers": true,
+  "alwaysThinkingEnabled": false
+}
