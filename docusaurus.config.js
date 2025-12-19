@@ -88,7 +88,7 @@ const config = {
             label: 'Book',
           },
           {
-            href: 'https://github.com/facebook/docusaurus',
+            href: 'https://github.com/Rayder-23/Hackathon-1_Physical-AI-Book',
             label: 'GitHub',
             position: 'right',
           },
