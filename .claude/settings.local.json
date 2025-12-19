@@ -1,11 +1,6 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(python:*)",
-      "Bash(.specify/scripts/bash/create-new-feature.sh:*)",
-      "Bash(cat:*)",
-      "Bash(.specify/scripts/bash/setup-plan.sh:*)"
-    ],
+    "allow": [],
     "deny": [],
     "ask": []
   },

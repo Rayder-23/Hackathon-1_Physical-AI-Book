@@ -92,6 +92,31 @@ const config = {
             label: 'GitHub',
             position: 'right',
           },
+          {
+            type: 'dropdown',
+            label: 'Account',
+            position: 'right',
+            items: [
+              {
+                label: 'Login',
+                to: '/Hackathon-1_Physical-AI-Book/login',
+              },
+              {
+                label: 'Register',
+                to: '/Hackathon-1_Physical-AI-Book/register',
+              },
+              {
+                label: 'Profile',
+                to: '/Hackathon-1_Physical-AI-Book/profile',
+                className: 'navbar__profile-link',
+              },
+              {
+                label: 'Logout',
+                to: '#',
+                className: 'navbar__logout-link',
+              },
+            ],
+          },
         ],
       },
       footer: {

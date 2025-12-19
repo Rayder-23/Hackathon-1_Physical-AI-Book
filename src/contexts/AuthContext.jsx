@@ -1,122 +1,293 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import authClient from '../utils/authClient';
 
+// Create Auth Context
 const AuthContext = createContext();
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
-
+// Auth Provider Component
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [token, setToken] = useState(null);
 
-  // Initialize auth state from Better-Auth
+  // Check authentication status on initial load
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Get current session from Better-Auth
-      const checkSession = async () => {
-        try {
-          const session = await authClient.getSession();
-          if (session?.user) {
-            setUser(session.user);
-            setIsAuthenticated(true);
+    const checkAuthStatus = async () => {
+      try {
+        // Check if we're in browser environment
+        if (typeof window !== 'undefined') {
+          // Try to get user from localStorage
+          const storedUser = localStorage.getItem('currentUser');
+          if (storedUser) {
+            const userData = JSON.parse(storedUser);
+            setUser(userData);
           }
-        } catch (e) {
-          console.error('Failed to get session', e);
-        } finally {
-          setLoading(false);
-        }
-      };
 
-      checkSession();
-    } else {
-      // On server, set loading to false immediately
-      setLoading(false);
-    }
+          // Try to get profile from localStorage
+          const storedProfile = localStorage.getItem('userProfile');
+          if (storedProfile) {
+            const profileData = JSON.parse(storedProfile);
+            setProfile(profileData);
+          }
+
+          // Try to get token from localStorage
+          const storedToken = localStorage.getItem('authToken');
+          if (storedToken) {
+            setToken(storedToken);
+          }
+        }
+      } catch (error) {
+        console.error('Error checking auth status:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuthStatus();
   }, []);
 
-  const login = async (email, password) => {
-    if (typeof window !== 'undefined') {
-      try {
-        // Use Better-Auth client login
-        const result = await authClient.signIn.email({
+  // Register function with profile data
+  const register = async (email, password, softwareExperience, hardwareExperience, backgroundPreference) => {
+    try {
+      setLoading(true);
+
+      // Make API call to backend
+      const response = await fetch('http://localhost:8000/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           email,
           password,
-          callbackURL: window.location.origin + '/Hackathon-1_Physical-AI-Book/' // Redirect after login with base URL
-        });
+          software_experience: softwareExperience,
+          hardware_experience: hardwareExperience,
+          background_preference: backgroundPreference
+        }),
+      });
 
-        if (result?.user) {
-          setUser(result.user);
-          setIsAuthenticated(true);
-          return { success: true, user: result.user };
-        } else {
-          return { success: false, error: result?.error?.message || 'Login failed' };
-        }
-      } catch (error) {
-        console.error('Login error:', error);
-        return { success: false, error: error.message || 'Login failed' };
+      // Check if the response is JSON before parsing
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        // If not JSON, try to read as text to see what we got
+        const text = await response.text();
+        console.error('Non-JSON response from server:', text);
+        throw new Error(`Server returned non-JSON response. Status: ${response.status}`);
       }
+
+      const data = await response.json();
+
+      if (data.success) {
+        setUser(data.user);
+        setProfile(data.profile);
+        setToken(data.token);
+
+        // Store user data in localStorage for static hosting
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('currentUser', JSON.stringify(data.user));
+          localStorage.setItem('userProfile', JSON.stringify(data.profile));
+          localStorage.setItem('authToken', data.token);
+        }
+
+        return { success: true, user: data.user, profile: data.profile };
+      } else {
+        return { success: false, error: data.error };
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      return { success: false, error: error.message };
+    } finally {
+      setLoading(false);
     }
-    return { success: false, error: 'Window not available' };
   };
 
+  // Login function
+  const login = async (email, password) => {
+    try {
+      setLoading(true);
+
+      // Make API call to backend
+      const response = await fetch('http://localhost:8000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password
+        }),
+      });
+
+      // Check if the response is JSON before parsing
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        // If not JSON, try to read as text to see what we got
+        const text = await response.text();
+        console.error('Non-JSON response from server:', text);
+        throw new Error(`Server returned non-JSON response. Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        setUser(data.user);
+        setProfile(data.profile);
+        setToken(data.token);
+
+        // Store user data in localStorage for static hosting
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('currentUser', JSON.stringify(data.user));
+          localStorage.setItem('userProfile', JSON.stringify(data.profile));
+          localStorage.setItem('authToken', data.token);
+        }
+
+        return { success: true, user: data.user, profile: data.profile };
+      } else {
+        return { success: false, error: data.error };
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      return { success: false, error: error.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Logout function
   const logout = async () => {
-    if (typeof window !== 'undefined') {
-      try {
-        // Use Better-Auth client logout
-        await authClient.signOut();
-        setUser(null);
-        setIsAuthenticated(false);
-      } catch (error) {
-        console.error('Logout error:', error);
-        // Still clear local state even if API call fails
-        setUser(null);
-        setIsAuthenticated(false);
-      }
-    }
-  };
+    try {
+      setLoading(true);
 
-  const register = async (email, password, name) => {
-    if (typeof window !== 'undefined') {
-      try {
-        // Use Better-Auth client registration
-        // Make email optional by using a placeholder if not provided
-        const emailToUse = email || `user-${Date.now()}@example.com`;
-        const result = await authClient.signUp.email({
-          email: emailToUse,
-          password,
-          name,
-          callbackURL: window.location.origin + '/Hackathon-1_Physical-AI-Book/' // Redirect after registration with base URL
+      // Call backend logout if token exists
+      if (token) {
+        await fetch('http://localhost:8000/api/auth/logout', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
         });
-
-        if (result?.user) {
-          setUser(result.user);
-          setIsAuthenticated(true);
-          return { success: true, user: result.user };
-        } else {
-          return { success: false, error: result?.error?.message || 'Registration failed' };
-        }
-      } catch (error) {
-        console.error('Registration error:', error);
-        return { success: false, error: error.message || 'Registration failed' };
       }
+
+      // Clear local state
+      setUser(null);
+      setProfile(null);
+      setToken(null);
+
+      // Clear localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('userProfile');
+        localStorage.removeItem('authToken');
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setLoading(false);
     }
-    return { success: false, error: 'Window not available' };
   };
 
+  // Update profile function
+  const updateProfile = async (profileData) => {
+    try {
+      if (!token) {
+        throw new Error('Not authenticated');
+      }
+
+      const response = await fetch('http://localhost:8000/api/auth/profile', {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(profileData),
+      });
+
+      // Check if the response is JSON before parsing
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        // If not JSON, try to read as text to see what we got
+        const text = await response.text();
+        console.error('Non-JSON response from server:', text);
+        throw new Error(`Server returned non-JSON response. Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        setProfile(data.profile);
+
+        // Update profile in localStorage as well
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('userProfile', JSON.stringify(data.profile));
+        }
+
+        return { success: true, profile: data.profile };
+      } else {
+        return { success: false, error: data.error };
+      }
+    } catch (error) {
+      console.error('Update profile error:', error);
+      return { success: false, error: error.message };
+    }
+  };
+
+  // Get profile function
+  const getProfile = async () => {
+    try {
+      if (!token) {
+        throw new Error('Not authenticated');
+      }
+
+      const response = await fetch('http://localhost:8000/api/auth/profile', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // Check if the response is JSON before parsing
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        // If not JSON, try to read as text to see what we got
+        const text = await response.text();
+        console.error('Non-JSON response from server:', text);
+        throw new Error(`Server returned non-JSON response. Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        setProfile(data.profile);
+
+        // Update profile in localStorage as well
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('userProfile', JSON.stringify(data.profile));
+        }
+
+        return { success: true, profile: data.profile };
+      } else {
+        return { success: false, error: data.error };
+      }
+    } catch (error) {
+      console.error('Get profile error:', error);
+      return { success: false, error: error.message };
+    }
+  };
+
+  // Context value
   const value = {
     user,
+    profile,
+    loading,
+    token,
+    register,
     login,
     logout,
-    register,
-    loading,
-    isAuthenticated
+    updateProfile,
+    getProfile,
+    isAuthenticated: !!user
   };
 
   return (
@@ -126,4 +297,11 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export default AuthContext;
+// Custom hook to use Auth Context
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};

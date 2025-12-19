@@ -21,6 +21,7 @@ from agent import rag_agent, QueryMode
 from vector_store import vector_store
 from rate_limiting import rate_limiter
 from session_service import session_service
+from src.auth.routes import router as auth_router
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -273,6 +274,9 @@ async def health_check():
     """
     return {"status": "healthy", "timestamp": datetime.utcnow()}
 
+# Include auth routes
+app.include_router(auth_router, prefix="/api", tags=["authentication"])
+
 @app.get("/")
 async def root():
     """
@@ -285,6 +289,7 @@ async def root():
             "/api/chat - Chat endpoint",
             "/api/retrieve - Content retrieval",
             "/api/sessions/{session_id} - Get session details",
+            "/api/auth - Authentication endpoints",
             "/health - Health check"
         ]
     }

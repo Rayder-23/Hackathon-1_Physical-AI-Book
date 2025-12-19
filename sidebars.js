@@ -94,8 +94,7 @@ const sidebars = {
       label: 'Testing',
       items: [
         'personalization-test',
-        'translation-test',
-        'auth-test'
+        'translation-test'
       ],
     },
   ],

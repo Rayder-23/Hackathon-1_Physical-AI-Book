@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { getUserBackground, updateUserProfile } from '../../config/auth';
+import { useAuth } from '../../contexts/AuthContext';
 
 const SignupQuestionnaire = ({ onComplete }) => {
   const [formData, setFormData] = useState({
-    softwareBackground: '',
-    hardwareBackground: '',
-    experienceLevel: 'intermediate'
+    software_experience: 'beginner',
+    hardware_experience: 'beginner',
+    background_preference: 'software'
   });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const { updateProfile, profile } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,80 +22,84 @@ const SignupQuestionnaire = ({ onComplete }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
 
-    // Save user background information
-    const profileData = {
-      softwareBackground: formData.softwareBackground,
-      hardwareBackground: formData.hardwareBackground,
-      experienceLevel: formData.experienceLevel,
-      completedQuestionnaire: true,
-      questionnaireCompletedAt: new Date().toISOString()
-    };
-
-    // Update user profile in localStorage
-    const success = updateUserProfile(profileData);
-
-    if (success && onComplete) {
-      onComplete(profileData);
+    try {
+      const result = await updateProfile(formData);
+      if (result.success) {
+        if (onComplete) {
+          onComplete(result.profile);
+        }
+      } else {
+        setError(result.error || 'Failed to update profile. Please try again.');
+      }
+    } catch (err) {
+      setError(err.message || 'Failed to update profile. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="signup-questionnaire">
-      <h2>Tell Us About Your Background</h2>
-      <p>This information will help us personalize your learning experience in Physical AI and Robotics.</p>
+    <div className="auth-container">
+      <div className="auth-form">
+        <h2>Tell Us About Your Background</h2>
+        <p>This information will help us personalize your learning experience in Physical AI and Robotics.</p>
 
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="softwareBackground">
-            <strong>Software Background:</strong>
-          </label>
-          <textarea
-            id="softwareBackground"
-            name="softwareBackground"
-            value={formData.softwareBackground}
-            onChange={handleChange}
-            placeholder="Describe your software development experience, programming languages you know, and any robotics software experience..."
-            rows="4"
-            required
-          />
-        </div>
+        {error && <div className="error-message">{error}</div>}
 
-        <div className="form-group">
-          <label htmlFor="hardwareBackground">
-            <strong>Hardware Background:</strong>
-          </label>
-          <textarea
-            id="hardwareBackground"
-            name="hardwareBackground"
-            value={formData.hardwareBackground}
-            onChange={handleChange}
-            placeholder="Describe your hardware experience, electronics knowledge, and any robotics hardware experience..."
-            rows="4"
-            required
-          />
-        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="software_experience">Software Experience:</label>
+            <select
+              id="software_experience"
+              name="software_experience"
+              value={formData.software_experience}
+              onChange={handleChange}
+              disabled={loading}
+            >
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="experienceLevel">
-            <strong>Overall Experience Level:</strong>
-          </label>
-          <select
-            id="experienceLevel"
-            name="experienceLevel"
-            value={formData.experienceLevel}
-            onChange={handleChange}
-          >
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
-          </select>
-        </div>
+          <div className="form-group">
+            <label htmlFor="hardware_experience">Hardware Experience:</label>
+            <select
+              id="hardware_experience"
+              name="hardware_experience"
+              value={formData.hardware_experience}
+              onChange={handleChange}
+              disabled={loading}
+            >
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
 
-        <button type="submit" className="button button--primary">
-          Complete Profile
-        </button>
-      </form>
+          <div className="form-group">
+            <label htmlFor="background_preference">Background Preference:</label>
+            <select
+              id="background_preference"
+              name="background_preference"
+              value={formData.background_preference}
+              onChange={handleChange}
+              disabled={loading}
+            >
+              <option value="software">Software</option>
+              <option value="hardware">Hardware</option>
+              <option value="both">Both</option>
+            </select>
+          </div>
+
+          <button type="submit" disabled={loading} className="auth-button">
+            {loading ? 'Saving...' : 'Complete Profile'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

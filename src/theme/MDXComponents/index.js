@@ -1,7 +1,29 @@
 // Index file to export all personalized MDX components
-export { default as PersonalizedContent } from './PersonalizedContent';
-export { default as PersonalizedParagraph } from './PersonalizedParagraph';
-export { default as PersonalizedCode } from './PersonalizedCode';
-export { default as PersonalizedSection } from './PersonalizedSection';
-export { default as TranslatableContent } from './TranslatableContent';
-export { default as ProtectedContent } from './ProtectedContent';
+import PersonalizedContent from './PersonalizedContent';
+import PersonalizedParagraph from './PersonalizedParagraph';
+import PersonalizedCode from './PersonalizedCode';
+import PersonalizedSection from './PersonalizedSection';
+import TranslatableContent from './TranslatableContent';
+import ProtectedContent from './ProtectedContent';
+
+// Default export for Docusaurus MDX components
+const MDXComponents = {
+  PersonalizedContent,
+  PersonalizedParagraph,
+  PersonalizedCode,
+  PersonalizedSection,
+  TranslatableContent,
+  ProtectedContent,
+};
+
+export default MDXComponents;
+
+// Named exports for individual components
+export {
+  PersonalizedContent,
+  PersonalizedParagraph,
+  PersonalizedCode,
+  PersonalizedSection,
+  TranslatableContent,
+  ProtectedContent
+};
