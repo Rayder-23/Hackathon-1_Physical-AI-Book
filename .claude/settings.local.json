@@ -1,11 +1,12 @@
 {
   "permissions": {
-    "allow": [],
+    "allow": [
+      "Skill(frontend-design)"
+    ],
     "deny": [],
     "ask": []
   },
-  "disabledMcpjsonServers": [
-  ],
   "enableAllProjectMcpServers": true,
+  "disabledMcpjsonServers": [],
   "alwaysThinkingEnabled": false
 }

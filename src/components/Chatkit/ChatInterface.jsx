@@ -11,11 +11,18 @@ const ChatInterface = () => {
   // Initialize chat on component mount
   useEffect(() => {
     // In a real implementation, this would create or get a session/room
-    // For now, we'll use a default room ID
-    // In Docusaurus, we might want to create a persistent room for the user
-    const storedRoomId = localStorage.getItem('chatkit_room_id');
-    const defaultRoomId = storedRoomId || 'docusaurus-chat-room';
-    setRoomId(defaultRoomId);
+    // For now, we'll use a default room ID in UUID format to match backend expectations
+    let storedRoomId = localStorage.getItem('chatkit_room_id');
+
+    // If no room ID exists in localStorage, create a new UUID
+    if (!storedRoomId) {
+      // Generate a proper UUID for the room
+      storedRoomId = 'room_' + crypto.randomUUID?.() || 'room_' + ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      );
+      localStorage.setItem('chatkit_room_id', storedRoomId);
+    }
+    setRoomId(storedRoomId);
 
     // Get or create user ID (could be from auth context or generated)
     let currentUserId = localStorage.getItem('chatkit_user_id');
@@ -24,11 +31,6 @@ const ChatInterface = () => {
       localStorage.setItem('chatkit_user_id', currentUserId);
     }
     setUserId(currentUserId);
-
-    // Store room ID in localStorage to persist across page navigation
-    if (!storedRoomId) {
-      localStorage.setItem('chatkit_room_id', defaultRoomId);
-    }
 
     setIsInitialized(true);
   }, []);
