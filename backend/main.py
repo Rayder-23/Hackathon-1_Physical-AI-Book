@@ -10,18 +10,66 @@ import time
 from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
+import random
+from enum import Enum
 
 # Load environment variables
 load_dotenv()
 
 # Import local modules
-from database import SessionLocal, get_db
-from models import ChatSession, UserQuery, AgentResponse, RetrievedContent
-from agent import rag_agent, QueryMode
-from vector_store import vector_store
-from rate_limiting import rate_limiter
-from session_service import session_service
-from src.auth.routes import router as auth_router
+from database.database import SessionLocal, get_db
+from models.models import ChatSession, UserQuery, AgentResponse, RetrievedContent
+from agents.agent import rag_agent, QueryMode
+from data.vector_store import vector_store
+from utils.rate_limiting import rate_limiter
+from services.session_service import session_service
+from auth.routes import router as auth_router
+from chatkit.routes import router as chatkit_router
+
+# Circuit breaker implementation
+class CircuitBreakerState(Enum):
+    CLOSED = "closed"
+    OPEN = "open"
+    HALF_OPEN = "half_open"
+
+class CircuitBreaker:
+    def __init__(self, failure_threshold: int = 5, recovery_timeout: int = 60):
+        self.failure_threshold = failure_threshold
+        self.recovery_timeout = recovery_timeout
+        self.failure_count = 0
+        self.last_failure_time = None
+        self.state = CircuitBreakerState.CLOSED
+
+    def call(self, func, *args, **kwargs):
+        if self.state == CircuitBreakerState.OPEN:
+            if time.time() - self.last_failure_time >= self.recovery_timeout:
+                self.state = CircuitBreakerState.HALF_OPEN
+            else:
+                raise Exception("Circuit breaker is OPEN")
+
+        try:
+            result = func(*args, **kwargs)
+            self.on_success()
+            return result
+        except Exception as e:
+            self.on_failure()
+            raise e
+
+    def on_success(self):
+        self.failure_count = 0
+        self.state = CircuitBreakerState.CLOSED
+
+    def on_failure(self):
+        self.failure_count += 1
+        self.last_failure_time = time.time()
+        if self.failure_count >= self.failure_threshold:
+            self.state = CircuitBreakerState.OPEN
+
+# Create circuit breaker instance for RAG services
+rag_circuit_breaker = CircuitBreaker(
+    failure_threshold=int(os.getenv("CIRCUIT_BREAKER_FAILURE_THRESHOLD", 5)),
+    recovery_timeout=int(os.getenv("CIRCUIT_BREAKER_RECOVERY_TIMEOUT", 60))
+)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -86,7 +134,7 @@ def startup_event():
     """
     Startup event to initialize the database
     """
-    from database import create_tables
+    from database.database import create_tables
     create_tables()
     logger.info("Database tables created successfully")
 
@@ -145,12 +193,20 @@ async def chat_endpoint(request: Request, chat_request: ChatRequest, db: Session
         # Validate the query mode
         query_mode = QueryMode(chat_request.mode)
 
-        # Process the query through the RAG agent
-        agent_response = rag_agent.process_query(
-            user_query=chat_request.message,
-            mode=query_mode,
-            selected_text=chat_request.selected_text
-        )
+        # Process the query through the RAG agent using circuit breaker
+        try:
+            agent_response = rag_circuit_breaker.call(
+                rag_agent.process_query,
+                user_query=chat_request.message,
+                mode=query_mode,
+                selected_text=chat_request.selected_text
+            )
+        except Exception as e:
+            logger.error(f"Circuit breaker OPEN or RAG agent error: {str(e)}")
+            raise HTTPException(
+                status_code=503,
+                detail="Service temporarily unavailable due to high error rate. Please try again later."
+            )
 
         # Check if the agent returned an error
         if "Error" in agent_response.content or "error" in agent_response.content.lower():
@@ -217,7 +273,7 @@ async def retrieve_endpoint(retrieve_request: RetrieveRequest):
     Perform content retrieval from the vector store
     """
     try:
-        from embeddings import embeddings_service
+        from data.embeddings import embeddings_service
 
         # Generate embedding for the query
         query_embedding = embeddings_service.embed_text(retrieve_request.query)
@@ -276,6 +332,9 @@ async def health_check():
 
 # Include auth routes
 app.include_router(auth_router, prefix="/api", tags=["authentication"])
+
+# Include chatkit routes
+app.include_router(chatkit_router, prefix="/api", tags=["chatkit"])
 
 @app.get("/")
 async def root():
