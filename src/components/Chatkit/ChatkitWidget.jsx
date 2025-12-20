@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../../css/chatkit-styles.css';
+import config from '../../utils/config';
 
 // Custom Chatkit widget implementation that works with our RAG backend
 const ChatkitWidget = ({ roomId, userId }) => {
@@ -14,11 +15,8 @@ const ChatkitWidget = ({ roomId, userId }) => {
   useEffect(() => {
     const initializeConnection = async () => {
       try {
-        // Fetch the token from our backend - use environment variable or default
-        const backendUrl = (typeof process !== 'undefined' && process.env && process.env.REACT_APP_BACKEND_URL)
-          ? process.env.REACT_APP_BACKEND_URL
-          : 'http://localhost:8005';
-        const res = await fetch(`${backendUrl}/api/chatkit/token`, {
+        // Use the configured backend URL
+        const res = await fetch(`${config.BACKEND_URL}/api/chatkit/token`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -85,11 +83,8 @@ const ChatkitWidget = ({ roomId, userId }) => {
     setIsLoading(true);
 
     try {
-      // Send to our backend API - use environment variable or default
-      const backendUrl = (typeof process !== 'undefined' && process.env && process.env.REACT_APP_BACKEND_URL)
-        ? process.env.REACT_APP_BACKEND_URL
-        : 'http://localhost:8005';
-      const response = await fetch(`${backendUrl}/api/chat`, {
+      // Send to our backend API using configured URL
+      const response = await fetch(`${config.BACKEND_URL}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

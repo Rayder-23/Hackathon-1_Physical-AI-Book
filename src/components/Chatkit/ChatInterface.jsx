@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ChatkitProvider from './ChatkitProvider';
 import ChatkitWidget from './ChatkitWidget';
 import '../../css/chatkit-styles.css';
+import config from '../../utils/config';
 
 const ChatInterface = () => {
   const [roomId, setRoomId] = useState(null);
@@ -38,11 +39,8 @@ const ChatInterface = () => {
   // Define token provider function
   const getToken = async (userId) => {
     try {
-      // Use environment variable or default for backend URL
-      const backendUrl = (typeof process !== 'undefined' && process.env && process.env.REACT_APP_BACKEND_URL)
-        ? process.env.REACT_APP_BACKEND_URL
-        : 'http://localhost:8005';
-      const response = await fetch(`${backendUrl}/api/chatkit/token`, {
+      // Use the configured backend URL
+      const response = await fetch(`${config.BACKEND_URL}/api/chatkit/token`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

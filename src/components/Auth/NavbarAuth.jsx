@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import config from '../../utils/config';
 
 const NavbarAuth = () => {
   const [authState, setAuthState] = useState({
@@ -48,12 +49,8 @@ const NavbarAuth = () => {
       // Call backend logout if token exists
       const token = localStorage.getItem('authToken');
       if (token) {
-        // Use environment variable or default for backend URL
-        const backendUrl = (typeof process !== 'undefined' && process.env && process.env.REACT_APP_BACKEND_URL)
-          ? process.env.REACT_APP_BACKEND_URL
-          : 'http://localhost:8005';
         // Make async call but don't wait for it to avoid blocking UI
-        fetch(`${backendUrl}/api/auth/logout`, {
+        fetch(`${config.BACKEND_URL}/api/auth/logout`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
