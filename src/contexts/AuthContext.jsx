@@ -51,8 +51,10 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
 
+      // Use environment variable or default for backend URL
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
       // Make API call to backend
-      const response = await fetch('http://localhost:8000/api/auth/register', {
+      const response = await fetch(`${backendUrl}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -106,8 +108,10 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
 
+      // Use environment variable or default for backend URL
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
       // Make API call to backend
-      const response = await fetch('http://localhost:8000/api/auth/login', {
+      const response = await fetch(`${backendUrl}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -160,7 +164,9 @@ export const AuthProvider = ({ children }) => {
 
       // Call backend logout if token exists
       if (token) {
-        await fetch('http://localhost:8000/api/auth/logout', {
+        // Use environment variable or default for backend URL
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
+        await fetch(`${backendUrl}/api/auth/logout`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -194,7 +200,9 @@ export const AuthProvider = ({ children }) => {
         throw new Error('Not authenticated');
       }
 
-      const response = await fetch('http://localhost:8000/api/auth/profile', {
+      // Use environment variable or default for backend URL
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
+      const response = await fetch(`${backendUrl}/api/auth/profile`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -239,7 +247,9 @@ export const AuthProvider = ({ children }) => {
         throw new Error('Not authenticated');
       }
 
-      const response = await fetch('http://localhost:8000/api/auth/profile', {
+      // Use environment variable or default for backend URL
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
+      const response = await fetch(`${backendUrl}/api/auth/profile`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,

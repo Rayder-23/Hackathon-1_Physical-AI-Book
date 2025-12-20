@@ -38,7 +38,9 @@ const ChatInterface = () => {
   // Define token provider function
   const getToken = async (userId) => {
     try {
-      const response = await fetch('/api/chatkit/token', {
+      // Use environment variable or default for backend URL
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
+      const response = await fetch(`${backendUrl}/api/chatkit/token`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

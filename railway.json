@@ -1,0 +1,68 @@
+{
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand": "uvicorn main:app --host 0.0.0.0 --port $PORT",
+    "healthCheckPath": "/health",
+    "healthCheckTimeout": 300
+  },
+  "env": {
+    "PORT": {
+      "value": "8000",
+      "description": "Port to run the application on"
+    },
+    "OPENROUTER_API_KEY": {
+      "value": "",
+      "description": "Your OpenRouter API key",
+      "required": true
+    },
+    "OPENROUTER_MODEL_NAME": {
+      "value": "openai/gpt-4o-mini",
+      "description": "Model name for OpenRouter API"
+    },
+    "QDRANT_URL": {
+      "value": "",
+      "description": "Your Qdrant Cloud URL",
+      "required": true
+    },
+    "QDRANT_API_KEY": {
+      "value": "",
+      "description": "Your Qdrant API key",
+      "required": true
+    },
+    "QDRANT_COLLECTION_NAME": {
+      "value": "book_content",
+      "description": "Qdrant collection name"
+    },
+    "DATABASE_URL": {
+      "value": "",
+      "description": "Your Neon Postgres database URL",
+      "required": true
+    },
+    "MAX_CONTEXT_TOKENS": {
+      "value": "2000",
+      "description": "Maximum context tokens allowed"
+    },
+    "SESSION_RETENTION_DAYS": {
+      "value": "30",
+      "description": "Number of days to retain sessions"
+    },
+    "RATE_LIMIT_REQUESTS": {
+      "value": "100",
+      "description": "Number of requests allowed per time window"
+    },
+    "RATE_LIMIT_WINDOW": {
+      "value": "3600",
+      "description": "Time window for rate limiting in seconds"
+    },
+    "CIRCUIT_BREAKER_FAILURE_THRESHOLD": {
+      "value": "5",
+      "description": "Number of failures before circuit breaker opens"
+    },
+    "CIRCUIT_BREAKER_RECOVERY_TIMEOUT": {
+      "value": "60",
+      "description": "Time in seconds before circuit breaker attempts recovery"
+    }
+  }
+}
