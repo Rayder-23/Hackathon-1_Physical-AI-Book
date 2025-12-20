@@ -15,7 +15,9 @@ const ChatkitWidget = ({ roomId, userId }) => {
     const initializeConnection = async () => {
       try {
         // Fetch the token from our backend - use environment variable or default
-        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
+        const backendUrl = (typeof process !== 'undefined' && process.env && process.env.REACT_APP_BACKEND_URL)
+          ? process.env.REACT_APP_BACKEND_URL
+          : 'http://localhost:8005';
         const res = await fetch(`${backendUrl}/api/chatkit/token`, {
           method: 'POST',
           headers: {
@@ -84,7 +86,9 @@ const ChatkitWidget = ({ roomId, userId }) => {
 
     try {
       // Send to our backend API - use environment variable or default
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
+      const backendUrl = (typeof process !== 'undefined' && process.env && process.env.REACT_APP_BACKEND_URL)
+        ? process.env.REACT_APP_BACKEND_URL
+        : 'http://localhost:8005';
       const response = await fetch(`${backendUrl}/api/chat`, {
         method: 'POST',
         headers: {

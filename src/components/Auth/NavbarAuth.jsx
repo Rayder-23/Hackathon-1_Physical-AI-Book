@@ -49,7 +49,9 @@ const NavbarAuth = () => {
       const token = localStorage.getItem('authToken');
       if (token) {
         // Use environment variable or default for backend URL
-        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
+        const backendUrl = (typeof process !== 'undefined' && process.env && process.env.REACT_APP_BACKEND_URL)
+          ? process.env.REACT_APP_BACKEND_URL
+          : 'http://localhost:8005';
         // Make async call but don't wait for it to avoid blocking UI
         fetch(`${backendUrl}/api/auth/logout`, {
           method: 'POST',

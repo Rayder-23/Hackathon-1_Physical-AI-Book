@@ -52,7 +52,9 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
 
       // Use environment variable or default for backend URL
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
+      const backendUrl = (typeof process !== 'undefined' && process.env && process.env.REACT_APP_BACKEND_URL)
+        ? process.env.REACT_APP_BACKEND_URL
+        : 'http://localhost:8005';
       // Make API call to backend
       const response = await fetch(`${backendUrl}/api/auth/register`, {
         method: 'POST',
@@ -109,7 +111,9 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
 
       // Use environment variable or default for backend URL
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
+      const backendUrl = (typeof process !== 'undefined' && process.env && process.env.REACT_APP_BACKEND_URL)
+        ? process.env.REACT_APP_BACKEND_URL
+        : 'http://localhost:8005';
       // Make API call to backend
       const response = await fetch(`${backendUrl}/api/auth/login`, {
         method: 'POST',
@@ -165,7 +169,9 @@ export const AuthProvider = ({ children }) => {
       // Call backend logout if token exists
       if (token) {
         // Use environment variable or default for backend URL
-        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
+        const backendUrl = (typeof process !== 'undefined' && process.env && process.env.REACT_APP_BACKEND_URL)
+          ? process.env.REACT_APP_BACKEND_URL
+          : 'http://localhost:8005';
         await fetch(`${backendUrl}/api/auth/logout`, {
           method: 'POST',
           headers: {
@@ -201,7 +207,9 @@ export const AuthProvider = ({ children }) => {
       }
 
       // Use environment variable or default for backend URL
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
+      const backendUrl = (typeof process !== 'undefined' && process.env && process.env.REACT_APP_BACKEND_URL)
+        ? process.env.REACT_APP_BACKEND_URL
+        : 'http://localhost:8005';
       const response = await fetch(`${backendUrl}/api/auth/profile`, {
         method: 'PUT',
         headers: {
@@ -248,7 +256,9 @@ export const AuthProvider = ({ children }) => {
       }
 
       // Use environment variable or default for backend URL
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
+      const backendUrl = (typeof process !== 'undefined' && process.env && process.env.REACT_APP_BACKEND_URL)
+        ? process.env.REACT_APP_BACKEND_URL
+        : 'http://localhost:8005';
       const response = await fetch(`${backendUrl}/api/auth/profile`, {
         method: 'GET',
         headers: {
