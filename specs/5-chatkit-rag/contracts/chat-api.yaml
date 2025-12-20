@@ -1,0 +1,251 @@
+openapi: 3.0.0
+info:
+  title: Chatkit RAG Chatbot API
+  description: API for integrating Chatkit with RAG backend for the Physical AI Book
+  version: 1.0.0
+servers:
+  - url: https://api.physical-ai-book.com
+    description: Production server
+  - url: https://staging-api.physical-ai-book.com
+    description: Staging server
+
+paths:
+  /chat/token:
+    post:
+      summary: Generate Chatkit token for user
+      description: Creates a temporary token for Chatkit authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: User identifier (empty for guest users)
+                roomId:
+                  type: string
+                  description: Chat room identifier
+              required:
+                - roomId
+      responses:
+        '200':
+          description: Successfully generated token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: Chatkit authentication token
+                  userId:
+                    type: string
+                    description: User identifier
+                  expiresAt:
+                    type: string
+                    format: date-time
+                    description: Token expiration time
+        '400':
+          description: Invalid request parameters
+        '401':
+          description: Unauthorized access
+
+  /chat/session:
+    post:
+      summary: Create a new chat session
+      description: Initializes a new chat session for a user or guest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: User identifier (optional for guest sessions)
+                sessionId:
+                  type: string
+                  description: Session identifier from Chatkit
+                roomName:
+                  type: string
+                  description: Name for the chat room
+              required:
+                - sessionId
+      responses:
+        '201':
+          description: Session created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessionId:
+                    type: string
+                    description: Created session identifier
+                  roomId:
+                    type: string
+                    description: Chat room identifier
+                  isGuest:
+                    type: boolean
+                    description: Whether this is a guest session
+                  expiresAt:
+                    type: string
+                    format: date-time
+                    description: Session expiration time
+        '400':
+          description: Invalid request parameters
+
+  /chat/query:
+    post:
+      summary: Process a user query through RAG system
+      description: Takes a user query and processes it through the RAG system
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: User's query text
+                sessionId:
+                  type: string
+                  description: User session identifier
+                roomId:
+                  type: string
+                  description: Chat room identifier
+                userId:
+                  type: string
+                  description: User identifier
+              required:
+                - query
+                - sessionId
+                - roomId
+      responses:
+        '200':
+          description: Query processed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    description: Generated response to the query
+                  queryId:
+                    type: string
+                    description: Identifier for the query
+                  responseTime:
+                    type: number
+                    description: Time taken to process the query in milliseconds
+                  context:
+                    type: array
+                    items:
+                      type: string
+                    description: Context documents used for response
+        '429':
+          description: Rate limit exceeded
+        '500':
+          description: Internal server error during query processing
+
+  /chat/session/{sessionId}:
+    get:
+      summary: Get session details
+      description: Retrieve information about a specific chat session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Session details retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessionId:
+                    type: string
+                  userId:
+                    type: string
+                  isActive:
+                    type: boolean
+                  createdAt:
+                    type: string
+                    format: date-time
+                  lastActivityAt:
+                    type: string
+                    format: date-time
+                  expiresAt:
+                    type: string
+                    format: date-time
+        '404':
+          description: Session not found
+
+    delete:
+      summary: End a chat session
+      description: Mark a session as ended and clean up resources
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Session ended successfully
+        '404':
+          description: Session not found
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: JWT token for API authentication
+  schemas:
+    QueryRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          description: User's query text
+        sessionId:
+          type: string
+          description: User session identifier
+        roomId:
+          type: string
+          description: Chat room identifier
+        userId:
+          type: string
+          description: User identifier
+      required:
+        - query
+        - sessionId
+        - roomId
+    QueryResponse:
+      type: object
+      properties:
+        response:
+          type: string
+          description: Generated response to the query
+        queryId:
+          type: string
+          description: Identifier for the query
+        responseTime:
+          type: number
+          description: Time taken to process the query in milliseconds
+        context:
+          type: array
+          items:
+            type: string
+          description: Context documents used for response
+
+security:
+  - BearerAuth: []
