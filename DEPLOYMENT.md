@@ -31,17 +31,27 @@ This directory contains the necessary files to deploy the Physical AI Book RAG C
    - `DATABASE_URL` - Your Neon Postgres database connection string
 
    Optional variables with defaults:
-   - `PORT` - Port to run the application (default: 8000)
    - `OPENROUTER_MODEL_NAME` - Model name for OpenRouter API (default: openai/gpt-4o-mini)
    - `QDRANT_COLLECTION_NAME` - Qdrant collection name (default: book_content)
    - `MAX_CONTEXT_TOKENS` - Maximum context tokens (default: 2000)
    - `SESSION_RETENTION_DAYS` - Days to retain sessions (default: 30)
    - `RATE_LIMIT_REQUESTS` - Number of requests allowed per time window (default: 100)
    - `RATE_LIMIT_WINDOW` - Time window for rate limiting in seconds (default: 3600)
+   - `CIRCUIT_BREAKER_FAILURE_THRESHOLD` - Circuit breaker failure threshold (default: 5)
+   - `CIRCUIT_BREAKER_RECOVERY_TIMEOUT` - Circuit breaker recovery timeout (default: 60)
 
 4. **Deploy**:
    - Using CLI: `railway up` or `railway deploy`
    - Or deploy through Railway dashboard after connecting your GitHub repository
+
+## Important Note on PORT Configuration
+
+Railway automatically provides a `PORT` environment variable. The application is configured to work with Railway's port management:
+
+- The `railway.json` file specifies the start command as: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+- The application will automatically use the port provided by Railway
+- No need to manually set the `PORT` environment variable in Railway
+- The default `PORT` value in railway.json (8000) is just a fallback and will be overridden by Railway
 
 ## Health Check
 
