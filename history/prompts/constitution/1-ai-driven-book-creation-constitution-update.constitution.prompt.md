@@ -6,8 +6,8 @@ date_iso: "2025-12-07"
 surface: "agent"
 model: "Claude Sonnet 4.5"
 feature: "none"
-branch: "master"
-user: "user"
+branch: "main"
+user: "Rayder"
 command: "/sp.constitution"
 labels: ["constitution", "governance", "standards"]
 links:

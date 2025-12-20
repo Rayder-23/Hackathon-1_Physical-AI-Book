@@ -13,3 +13,4 @@ tiktoken==0.5.2
 requests==2.31.0
 bcrypt==4.0.1
 pyjwt==2.8.0
+openai-chatkit
