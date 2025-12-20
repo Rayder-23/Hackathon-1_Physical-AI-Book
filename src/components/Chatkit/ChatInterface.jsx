@@ -39,7 +39,9 @@ const ChatInterface = () => {
   const getToken = async (userId) => {
     try {
       // Use environment variable or default for backend URL
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
+      const backendUrl = (typeof process !== 'undefined' && process.env && process.env.REACT_APP_BACKEND_URL)
+        ? process.env.REACT_APP_BACKEND_URL
+        : 'http://localhost:8005';
       const response = await fetch(`${backendUrl}/api/chatkit/token`, {
         method: 'POST',
         headers: {

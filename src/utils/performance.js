@@ -340,7 +340,7 @@ export const optimizePerformance = {
     caching.clearExpiredCache();
 
     // Analyze chunk sizes if in development
-    if (process.env.NODE_ENV === 'development') {
+    if ((typeof process !== 'undefined' && process.env && process.env.NODE_ENV) === 'development') {
       bundleOptimizer.analyzeChunkSizes();
     }
 
