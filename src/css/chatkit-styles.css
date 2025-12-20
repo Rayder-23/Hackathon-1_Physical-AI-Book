@@ -1,0 +1,159 @@
+/* Chatkit Widget Styles */
+.chatkit-widget {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 350px;
+  height: 500px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  background: white;
+  z-index: 1000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.chatkit-widget.minimized {
+  height: auto;
+  width: auto;
+}
+
+.chatkit-header {
+  background: #4f46e5;
+  color: white;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  cursor: move;
+}
+
+.chatkit-header.minimized {
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.chatkit-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.chatkit-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.chatkit-controls button {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.chatkit-controls button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.chatkit-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chatkit-launcher {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chatkit-launcher:hover {
+  background: #4338ca;
+}
+
+.chat-interface {
+  position: relative;
+}
+
+.chat-loading {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+}
+
+/* Chat container specific styles */
+.chatkit-chat-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chatkit-message-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  background: #f9fafb;
+}
+
+.chatkit-message-input {
+  padding: 16px;
+  border-top: 1px solid #e5e7eb;
+  background: white;
+}
+
+/* Loading indicator styles */
+.chat-processing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #f3f4f6;
+  border-top: 1px solid #e5e7eb;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .chatkit-widget {
+    width: calc(100% - 40px);
+    height: 50vh;
+    bottom: 10px;
+    right: 10px;
+    left: 10px;
+  }
+}
