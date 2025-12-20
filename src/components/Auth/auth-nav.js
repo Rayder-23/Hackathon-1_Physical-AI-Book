@@ -66,7 +66,9 @@ function handleLogout() {
   // Call backend logout if token exists
   const token = localStorage.getItem('authToken');
   if (token) {
-    fetch('/api/auth/logout', {
+    // Use environment variable or default for backend URL
+    const backendUrl = window.ENV?.REACT_APP_BACKEND_URL || 'http://localhost:8005';
+    fetch(`${backendUrl}/api/auth/logout`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,

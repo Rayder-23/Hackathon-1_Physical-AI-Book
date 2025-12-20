@@ -14,8 +14,9 @@ const ChatkitWidget = ({ roomId, userId }) => {
   useEffect(() => {
     const initializeConnection = async () => {
       try {
-        // Fetch the token from our backend
-        const res = await fetch('http://localhost:8005/api/chatkit/token', {
+        // Fetch the token from our backend - use environment variable or default
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
+        const res = await fetch(`${backendUrl}/api/chatkit/token`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -82,8 +83,9 @@ const ChatkitWidget = ({ roomId, userId }) => {
     setIsLoading(true);
 
     try {
-      // Send to our backend API
-      const response = await fetch('http://localhost:8005/api/chat', {
+      // Send to our backend API - use environment variable or default
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8005';
+      const response = await fetch(`${backendUrl}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
