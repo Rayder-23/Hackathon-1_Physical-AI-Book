@@ -76,14 +76,14 @@ class RetrievalTool:
             # Perform search based on mode
             if mode == "selected-text" and selected_text:
                 # For selected-text mode, we search with restriction
-                results = self.vector_store.search_selected_text(
+                results = vector_store.search_selected_text(
                     query_vector=query_embedding,
                     selected_text=selected_text,
                     limit=5  # Limit results for relevance
                 )
             else:
                 # For full-book mode, search entire collection
-                results = self.vector_store.search_content(
+                results = vector_store.search_content(
                     query_vector=query_embedding,
                     limit=5,
                     mode=mode
@@ -217,6 +217,9 @@ class RAGAgent:
         # Initialize tools
         self.retrieval_tool = RetrievalTool(vector_store)
         self.validation_tool = ContextValidationTool()
+
+        # Set max context tokens for content formatting
+        self.max_context_tokens = max_context_tokens
 
         # System prompt focused on Physical AI book content
         self.system_prompt = """You are an expert assistant for the Physical AI book. Your role is to answer questions based strictly on the content from the Physical AI book. You must:

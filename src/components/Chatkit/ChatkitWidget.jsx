@@ -1,104 +1,138 @@
-import React, { useState, useCallback, useRef } from 'react';
-import { ChatKit, useChatKit } from '@openai/chatkit-react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../../css/chatkit-styles.css';
 
-// Chatkit widget implementation using the actual @openai/chatkit-react library
-
+// Custom Chatkit widget implementation that works with our RAG backend
 const ChatkitWidget = ({ roomId, userId }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState('connecting');
-  const chatkitRef = useRef(null);
+  const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef(null);
 
-  const { control, isInitialized, error: chatkitError } = useChatKit({
-    api: {
-      async getClientSecret(existing) {
-        try {
-          if (existing) {
-            // implement session refresh
-          }
+  // Initialize the connection to our backend
+  useEffect(() => {
+    const initializeConnection = async () => {
+      try {
+        // Fetch the token from our backend
+        const res = await fetch('http://localhost:8005/api/chatkit/token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ user_id: userId, session_id: roomId }),
+          mode: 'cors',
+        });
 
-          // Create a timeout promise
-          const timeoutPromise = new Promise((_, reject) => {
-            setTimeout(() => reject(new Error('Request timeout')), 10000); // 10 second timeout
-          });
-
-          // Race the fetch request against the timeout
-          const res = await Promise.race([
-            fetch('http://localhost:8005/api/chatkit/token', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ user_id: userId, session_id: roomId }),
-              mode: 'cors',
-            }),
-            timeoutPromise
-          ]);
-
-          if (!res.ok) {
-            throw new Error(`Failed to get token: ${res.status} ${res.statusText}`);
-          }
-
-          const data = await res.json();
-          // The backend returns a token field, but Chatkit might expect client_secret
-          // Check multiple possible response formats
-          const token = data.token || data.client_secret || data.access_token || data.data?.token;
-
-          if (!token) {
-            console.error('Invalid token response from server:', data);
-            throw new Error('Invalid token response from server. Expected "token", "client_secret", or "access_token" field.');
-          }
-
-          return token;
-        } catch (error) {
-          console.error('Error getting client secret:', error);
-          setConnectionStatus('error');
-          throw error;
+        if (!res.ok) {
+          throw new Error(`Failed to get token: ${res.status} ${res.statusText}`);
         }
-      },
-    },
-  });
 
-  // Set connection status based on initialization
-  React.useEffect(() => {
-    if (isInitialized) {
-      setConnectionStatus('connected');
-    } else if (chatkitError) {
-      setConnectionStatus('error');
-    }
-  }, [isInitialized, chatkitError]);
+        const data = await res.json();
+        const token = data.token;
+
+        if (!token) {
+          throw new Error('Invalid token response from server');
+        }
+
+        // Connection successful
+        setConnectionStatus('connected');
+
+        // Add a welcome message
+        setMessages(prev => [...prev, {
+          id: Date.now(),
+          text: "Hello! I'm your Physical AI Book Assistant. Ask me anything about the Physical AI book!",
+          sender: 'assistant',
+          timestamp: new Date().toISOString()
+        }]);
+      } catch (error) {
+        console.error('Error initializing chat:', error);
+        setConnectionStatus('error');
+      }
+    };
+
+    initializeConnection();
+  }, [userId, roomId]);
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
   };
 
-  const toggleMinimize = () => {
-    setIsMinimized(!isMinimized);
+
+  // Scroll to bottom of messages
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  // Send message to our RAG backend
+  const sendMessage = async () => {
+    if (!inputValue.trim() || isLoading) return;
+
+    const userMessage = {
+      id: Date.now(),
+      text: inputValue,
+      sender: 'user',
+      timestamp: new Date().toISOString()
+    };
+
+    // Add user message to UI immediately
+    setMessages(prev => [...prev, userMessage]);
+    const currentInput = inputValue;
+    setInputValue('');
+    setIsLoading(true);
+
+    try {
+      // Send to our backend API
+      const response = await fetch('http://localhost:8005/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: currentInput,
+          session_id: roomId
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to get response: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+
+      // Add bot response to messages
+      const botMessage = {
+        id: Date.now() + 1,
+        text: responseData.message || responseData.content || "I processed your request.",
+        sender: 'assistant',
+        timestamp: new Date().toISOString()
+      };
+
+      setMessages(prev => [...prev, botMessage]);
+    } catch (error) {
+      console.error('Error sending message:', error);
+
+      // Add error message
+      const errorMessage = {
+        id: Date.now() + 1,
+        text: "Sorry, I encountered an error processing your request. Please try again.",
+        sender: 'assistant',
+        timestamp: new Date().toISOString()
+      };
+
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // Callbacks for chat events
-  const handleThreadChange = useCallback((threadId) => {
-    console.log('Thread changed:', threadId);
-  }, []);
-
-  const handleResponseCompleted = useCallback(() => {
-    console.log('Response completed');
-  }, []);
-
-  const handleProfileUpdate = useCallback((profile) => {
-    console.log('Profile updated:', profile);
-  }, []);
-
-  // Handle custom actions
-  const handleWidgetActionComplete = useCallback(() => {
-    console.log('Widget action completed');
-  }, []);
-
-  // Set up chatkit reference when ready
-  const handleChatKitReady = useCallback((chatkit) => {
-    chatkitRef.current = chatkit;
-  }, []);
+  // Handle pressing Enter to send message
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
 
   if (!isOpen) {
     return (
@@ -108,25 +142,13 @@ const ChatkitWidget = ({ roomId, userId }) => {
     );
   }
 
-  if (isMinimized) {
-    return (
-      <div className="chatkit-widget minimized">
-        <div className="chatkit-header minimized" onClick={toggleMinimize}>
-          <span>💬 Chat</span>
-          <button className="minimize-btn">+</button>
-        </div>
-      </div>
-    );
-  }
 
-  // Show loading while connecting
   if (connectionStatus === 'connecting') {
     return (
       <div className="chatkit-widget">
         <div className="chatkit-header">
           <h3>Physical AI Book Assistant</h3>
           <div className="chatkit-controls">
-            <button className="minimize-btn" onClick={toggleMinimize}>−</button>
             <button className="close-btn" onClick={toggleChat}>✕</button>
           </div>
         </div>
@@ -137,14 +159,12 @@ const ChatkitWidget = ({ roomId, userId }) => {
     );
   }
 
-  // Show error state
   if (connectionStatus === 'error') {
     return (
       <div className="chatkit-widget">
         <div className="chatkit-header">
           <h3>Physical AI Book Assistant</h3>
           <div className="chatkit-controls">
-            <button className="minimize-btn" onClick={toggleMinimize}>−</button>
             <button className="close-btn" onClick={toggleChat}>✕</button>
           </div>
         </div>
@@ -155,26 +175,51 @@ const ChatkitWidget = ({ roomId, userId }) => {
     );
   }
 
-  // Render the ChatKit component with the control from useChatKit
   return (
     <div className="chatkit-widget">
       <div className="chatkit-header">
         <h3>Physical AI Book Assistant</h3>
         <div className="chatkit-controls">
-          <button className="minimize-btn" onClick={toggleMinimize}>−</button>
           <button className="close-btn" onClick={toggleChat}>✕</button>
         </div>
       </div>
       <div className="chatkit-content">
-        {control ? (
-          <ChatKit
-            control={control}
-            className="chatkit-container"
-            style={{ height: '400px', width: '100%' }}
+        <div className="messages-container">
+          {messages.map((message) => (
+            <div
+              key={message.id}
+              className={`message ${message.sender === 'user' ? 'user-message' : 'assistant-message'}`}
+            >
+              <div className="message-text">{message.text}</div>
+              <div className="message-timestamp">
+                {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </div>
+            </div>
+          ))}
+          {isLoading && (
+            <div className="message assistant-message">
+              <div className="message-text">⏳ Thinking...</div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+        <div className="input-container">
+          <textarea
+            className="message-input"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Ask about the Physical AI book..."
+            rows="1"
           />
-        ) : (
-          <div className="chat-loading">Initializing chat interface...</div>
-        )}
+          <button
+            className="send-button"
+            onClick={sendMessage}
+            disabled={isLoading || !inputValue.trim()}
+          >
+            {isLoading ? 'Sending...' : 'Send'}
+          </button>
+        </div>
       </div>
     </div>
   );

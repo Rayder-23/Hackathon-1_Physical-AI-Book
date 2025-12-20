@@ -235,13 +235,29 @@ async def chat_endpoint(request: Request, chat_request: ChatRequest, db: Session
         # Create RetrievedContent records if citations exist
         for citation in agent_response.citations:
             if citation.get("id"):
-                retrieved_content = RetrievedContent(
-                    query_id=user_query.id,
-                    book_content_id=uuid.UUID(citation["id"]),
-                    relevance_score=citation.get("relevance_score", 0.0),
-                    context_window=citation.get("content", "")[:500]  # Limit length
-                )
-                db.add(retrieved_content)
+                try:
+                    # Validate that the book_content_id exists in the database before creating the relationship
+                    book_content_id = uuid.UUID(citation["id"])
+
+                    # Check if the book_content exists in the database
+                    from models.models import BookContent
+                    book_content_exists = db.query(BookContent).filter(BookContent.id == book_content_id).first()
+
+                    if book_content_exists:
+                        retrieved_content = RetrievedContent(
+                            query_id=user_query.id,
+                            book_content_id=book_content_id,
+                            relevance_score=citation.get("relevance_score", 0.0),
+                            context_window=citation.get("content", "")[:500]  # Limit length
+                        )
+                        db.add(retrieved_content)
+                    else:
+                        # If the book_content_id doesn't exist in the database, skip creating the relationship
+                        # This could happen if the Qdrant collection has different IDs than the PostgreSQL database
+                        logger.warning(f"Book content ID {book_content_id} not found in database, skipping RetrievedContent creation")
+                except ValueError:
+                    # If citation["id"] is not a valid UUID, skip creating the relationship
+                    logger.warning(f"Invalid UUID format for citation ID: {citation['id']}, skipping RetrievedContent creation")
 
         db.commit()
 
